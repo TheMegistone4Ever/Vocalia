@@ -1,0 +1,7 @@
+play music
+tell me a joke
+weather forecast
+search for
+translate
+hey vocalia
+bye vocalia
