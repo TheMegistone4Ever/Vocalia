@@ -6,7 +6,6 @@ package com.nickmegistone.ai;
 
 import edu.cmu.sphinx.api.Configuration;
 import edu.cmu.sphinx.api.LiveSpeechRecognizer;
-import edu.cmu.sphinx.api.SpeechResult;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.advanced.AdvancedPlayer;
 import org.jetbrains.annotations.NotNull;
@@ -21,19 +20,17 @@ import java.io.IOException;
  */
 public class VoiceAssistant {
     private final LiveSpeechRecognizer lsr;
-    private final MCNPLNN MCModel;
+    public boolean isRecognizing;
 
     /**
      * Constructs a VoiceAssistant object with the specified parameters.
      *
-     * @param MCFilename     A string representing the filename of the Markov chain model.
-     * @param nGram          An integer representing the n-gram size for the Markov chain model.
      * @param dictFilename   A string representing the filename of the dictionary for speech recognition.
      * @param LMFilename     A string representing the filename of the language model for speech recognition.
      * @throws IOException  If an I/O error occurs while reading the files.
      */
-    public VoiceAssistant(String MCFilename, int nGram, String dictFilename, String LMFilename) throws IOException {
-        MCModel = new MCNPLNN(MCFilename, nGram);
+    public VoiceAssistant(String dictFilename, String LMFilename) throws IOException {
+        isRecognizing = false;
         Configuration config = new Configuration();
         config.setAcousticModelPath(
                 String.format("resource:%s", "/edu/cmu/sphinx/models/en-us/en-us"));
@@ -44,61 +41,88 @@ public class VoiceAssistant {
         lsr = new LiveSpeechRecognizer(config);
     }
 
+    public String getCommand() {
+        return lsr.getResult().getHypothesis().toLowerCase();
+    }
+
     /**
      * Starts the speech recognition process and performs tasks based on the recognized voice commands.
-     *
-     * @throws IOException          If an I/O error occurs while interacting with the voice assistant.
-     * @throws JavaLayerException   If an error occurs during audio playback.
      */
-    public void startSpeechRecognizing() throws IOException, JavaLayerException {
-        lsr.startRecognition(true);
+    /*public void startSpeechRecognizing() {
+        // lsr.startRecognition(true);
         SpeechResult speechResult;
         while ((speechResult = lsr.getResult()) != null) {
             String voiceCommand = speechResult.getHypothesis().toLowerCase();
             if (voiceCommand.contains("play music")) {
-                /* Integrate YouTube Music */
                 cmdExec("start chrome https://music.youtube.com/watch?list=RDAMVMljUtuoFt-8c");
             } else if (voiceCommand.contains("tell me a joke")) {
-                /* Integrate MCNPLNN */
-                String joke = MCModel.getSentence(5, "okay heres the joke");
-                System.out.println(joke);
+
             } else if (voiceCommand.contains("weather forecast")) {
-                /* Integrate Gismeteo */
                 cmdExec("start chrome https://www.gismeteo.ua/");
             } else if (voiceCommand.contains("search for")) {
-                /* Integrate Google Chrome */
                 cmdExec("start chrome https://www.google.com/search?q=" + getSubstringAfter(voiceCommand, "search for"));
             } else if (voiceCommand.contains("translate")) {
-                /* Integrate DeepL */
                 cmdExec("start chrome https://www.deepl.com/en/translator#en/uk/" + getSubstringAfter(voiceCommand, "translate"));
             } else if (voiceCommand.contains("hey vocalia")) {
                 playMP3("greetings.mp3");
                 // TODO: Add pointer to searchbar and voice-typing...
             } else if (voiceCommand.contains("bye vocalia")) {
                 stopRecognizing();
-                playMP3("farewell.mp3");
                 System.exit(0);
             } else {
                 System.err.printf("Command not found: %s...%n", voiceCommand);
             }
         }
+    }*/
+
+    public int getCode(String voiceCommand) {
+        if (voiceCommand.contains("play music")) {
+            return 0;
+        } else if (voiceCommand.contains("tell me a joke")) {
+            return 1;
+        } else if (voiceCommand.contains("weather forecast")) {
+            return 2;
+        } else if (voiceCommand.contains("search for")) {
+            return 3;
+        } else if (voiceCommand.contains("translate")) {
+            return 4;
+        } else if (voiceCommand.contains("hey vocalia")) {
+            return 5;
+        } else if (voiceCommand.contains("bye vocalia")) {
+            return 6;
+        }
+        return -1;
+    }
+
+    /**
+     * Starts the speech recognition process.
+     */
+    public void startRecognizing() {
+        isRecognizing = true;
+        lsr.startRecognition(true);
+        playMP3("greetings.mp3");
     }
 
     /**
      * Stops the speech recognition process.
      */
     public void stopRecognizing() {
+        isRecognizing = false;
         lsr.stopRecognition();
+        playMP3("farewell.mp3");
     }
 
     /**
      * Executes a command in the command prompt.
      *
-     * @param command   A string representing the command to be executed.
-     * @throws IOException  If an I/O error occurs while executing the command.
+     * @param command       A string representing the command to be executed.
      */
-    private static void cmdExec(String command) throws IOException {
-        Runtime.getRuntime().exec(new String[]{"cmd", "/c", command});
+    public void cmdExec(String command) {
+        try {
+            Runtime.getRuntime().exec(new String[]{"cmd", "/c", command});
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -108,7 +132,8 @@ public class VoiceAssistant {
      * @param searchTerm    The search term to find the substring after.
      * @return              The substring after the search term.
      */
-    private static @NotNull String getSubstringAfter(@NotNull String input, String searchTerm) {
+    public @NotNull String getSubstringAfter(@NotNull String input, String searchTerm) {
+        if (input.length() <= searchTerm.length()) return input;
         return input
                 .substring(input.indexOf(searchTerm) + searchTerm.length())
                 .trim()
@@ -119,12 +144,12 @@ public class VoiceAssistant {
      * Plays an MP3 file.
      *
      * @param filename   A string representing the filename of the MP3 file to be played.
-     * @throws IOException          If an I/O error occurs while reading the file.
-     * @throws JavaLayerException   If an error occurs during audio playback.
      */
-    private static void playMP3(String filename) throws IOException, JavaLayerException {
+    public void playMP3(String filename) {
         try (FileInputStream in = new FileInputStream(String.format("%s/src/main/java/com/nickmegistone/resources/%s", System.getProperty("user.dir"), filename))) {
             new AdvancedPlayer(in).play();
+        } catch (IOException | JavaLayerException e) {
+            throw new RuntimeException(e);
         }
     }
 }

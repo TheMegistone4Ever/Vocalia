@@ -3,21 +3,19 @@ package com.nickmegistone.vocaliamaven;
 import com.nickmegistone.event.EventMenu;
 import com.nickmegistone.form.Form;
 import com.nickmegistone.form.InitForm;
+import javazoom.jl.decoder.JavaLayerException;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.event.MouseEvent;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 public class VocaliaMaven extends javax.swing.JFrame {
-
     private int mouseX, mouseY;
     private boolean isFullScreen = false;
     
-    public VocaliaMaven() {
+    public VocaliaMaven() throws IOException, JavaLayerException {
         initComponents();
         setBackground(new Color(0, 0, 0, 0));
         EventMenu event = index -> {
@@ -29,6 +27,13 @@ public class VocaliaMaven extends javax.swing.JFrame {
         };
         menu1.initMenu(event);
         showForm(new InitForm());
+
+
+        /* Threads:
+            main
+            recognitionThread
+            Event Dispatch Thread
+         */
     }
 
     private void showForm(Component com) {
@@ -128,23 +133,19 @@ public class VocaliaMaven extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void roundPanel1MouseDragged(@NotNull MouseEvent evt) {//GEN-FIRST:event_roundPanel1MouseDragged
-        // TODO add your handling code here:
         this.setLocation(evt.getXOnScreen() - mouseX, evt.getYOnScreen() - mouseY);
     }//GEN-LAST:event_roundPanel1MouseDragged
 
     private void roundPanel1MousePressed(@NotNull MouseEvent evt) {//GEN-FIRST:event_roundPanel1MousePressed
-        // TODO add your handling code here:
         mouseX = evt.getX();
         mouseY = evt.getY();
     }//GEN-LAST:event_roundPanel1MousePressed
 
     private void roundPanel1MouseClicked(@NotNull MouseEvent evt) {//GEN-FIRST:event_roundPanel1MouseClicked
-        // TODO add your handling code here:
         if (evt.getClickCount() > 1) {
             GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
             if (isFullScreen) {
@@ -163,7 +164,7 @@ public class VocaliaMaven extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -177,11 +178,15 @@ public class VocaliaMaven extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(VocaliaMaven.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            VocaliaMaven vocalia = new VocaliaMaven();
+            VocaliaMaven vocalia;
+            try {
+                vocalia = new VocaliaMaven();
+            } catch (IOException | JavaLayerException e) {
+                throw new RuntimeException(e);
+            }
             vocalia.setIconImage(new ImageIcon(System.getProperty("user.dir") + "/src/main/java/com/nickmegistone/resources/logo.png").getImage());
             vocalia.setVisible(true);
         });

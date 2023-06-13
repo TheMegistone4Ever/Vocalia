@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 public class MCNPLNN {
     private final Random random;
     private final Map<String, Map<String, Double>> MCModel;
+    private final int nGram;
 
     /**
      * This constructor creates a Markov Chain model object from a file of raw text.
@@ -27,8 +28,9 @@ public class MCNPLNN {
      */
     public MCNPLNN(String filename, int nGram) {
         random = new Random();
+        this.nGram = nGram;
         List<String> clearText = readAndCleanText(String.format(System.getProperty("user.dir") +
-                "/src/main/java/com/nickmegistone/resources/%s.txt", filename));
+                "/src/main/java/com/nickmegistone/resources/%s", filename));
         MCModel = new HashMap<>();
         for (int i = 0; i <= clearText.size() - (nGram << 1); ++i) {
             String currState = String.join(" ", clearText.subList(i, i + nGram));
@@ -53,7 +55,10 @@ public class MCNPLNN {
      * @param start   A string representing the initial state to begin text generation. Default value is "для вашого організму".
      * @return A processed string of generated text.
      */
-    public String getSentence(int maxTokens, String start) {
+    public String getSentence(int maxTokens, @NotNull String start) {
+        if (start.chars().filter(ch -> ch == ' ').count() + 1 != nGram) {
+            return "Count of words must be same as nGram!";
+        }
         List<String> text = new ArrayList<>(Collections.singletonList(start));
         for (int i = 0; i < maxTokens; ++i) {
             Map<String, Double> possibleWords = MCModel.get(text.get(text.size() - 1));

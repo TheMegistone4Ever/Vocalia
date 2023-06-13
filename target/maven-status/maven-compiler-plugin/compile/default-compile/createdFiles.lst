@@ -1,5 +1,6 @@
 com\nickmegistone\swing\ImageAvatar.class
 com\nickmegistone\swing\ButtonBadges$1.class
+com\nickmegistone\ai\MCNPLNN.class
 com\nickmegistone\swing\ButtonMenu$1.class
 com\nickmegistone\form\InitForm$1.class
 com\nickmegistone\swing\RoundPanel.class
@@ -14,6 +15,7 @@ com\nickmegistone\component\Menu.class
 com\nickmegistone\form\InitForm$2.class
 com\nickmegistone\form\InitForm.class
 com\nickmegistone\swing\ButtonMenu$2.class
+com\nickmegistone\ai\chatGPT.class
 com\nickmegistone\swing\ButtonBadges.class
 com\nickmegistone\form\Form.class
 com\nickmegistone\swing\scrollbar\ModernScrollBarUI.class

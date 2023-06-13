@@ -1,26 +1,44 @@
 package com.nickmegistone.form;
 
+import com.nickmegistone.ai.MCNPLNN;
+import com.nickmegistone.ai.VoiceAssistant;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 public class InitForm extends javax.swing.JPanel {
 
+    VoiceAssistant va;
+    MCNPLNN MCModel;
+
     public InitForm() {
         initComponents();
+        MCModel = new MCNPLNN("mctext.txt", 4);
         setOpaque(false);
-        // jLabel1.setText("Welcome!");
+        Thread recognitionThread = new Thread(() -> {
+            try {
+                va = new VoiceAssistant("dict.dic", "language-model.lm");
+                va.startRecognizing();
+                while (va.isRecognizing) {
+                    handleCommand(va.getCommand());
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        recognitionThread.start();
     }
 
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        JLabel jLabel2 = new JLabel();
+        jLabel2 = new javax.swing.JLabel();
         search = new javax.swing.JTextField();
-        // Variables declaration - do not modify                     
-        JLabel jLabel1 = new JLabel();
-        JLabel jLabel3 = new JLabel();
-        JLabel jLabel4 = new JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setForeground(new java.awt.Color(0, 102, 102));
         setMinimumSize(new java.awt.Dimension(0, 0));
@@ -41,7 +59,7 @@ public class InitForm extends javax.swing.JPanel {
         search.setBackground(new java.awt.Color(0, 102, 102));
         search.setFont(new java.awt.Font("Segoe UI", Font.PLAIN, 18)); // NOI18N
         search.setForeground(new java.awt.Color(255, 255, 255));
-        search.setText("Search");
+        search.setText("Send");
         search.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         search.setCaretColor(new java.awt.Color(255, 102, 0));
         search.setDisabledTextColor(new java.awt.Color(0, 102, 102));
@@ -108,34 +126,89 @@ public class InitForm extends javax.swing.JPanel {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(522, Short.MAX_VALUE))
         );
-    }// </editor-fold>                        
+    }// </editor-fold>//GEN-END:initComponents
 
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
-        // TODO add your handling code here:
+        search.setEnabled(true);
     }//GEN-LAST:event_searchActionPerformed
 
     private void searchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchMouseClicked
-        // TODO add your handling code here:
+        System.out.println(evt);
         search.setEnabled(true);
         search.setText("");
     }//GEN-LAST:event_searchMouseClicked
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-        // TODO add your handling code here:
+        System.out.println(evt);
         search.setEnabled(false);
-        // search.setText("Search");
     }//GEN-LAST:event_formMouseClicked
 
     private void searchKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchKeyPressed
-        // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String searchQuery = search.getText();
-            if (searchQuery.length() == 0) {
-                search.setText("Input not zero-length query!");
-            }
+            handleCommand(searchQuery);
         }
     }//GEN-LAST:event_searchKeyPressed
 
+    private void handleCommand(String searchQuery) {
+        int code = va.getCode(searchQuery);
+        if (code != -1) {
+            search.setText(searchQuery);
+        } else {
+            search.setText("I don't understand your command!");
+            va.playMP3("farewell.mp3");
+        }
+        switch (code) {
+            case 0 -> handlePlayMusicCommand();
+            case 1 -> handleTellJokeCommand();
+            case 2 -> handleWeatherForecastCommand();
+            case 3 -> handleSearchCommand(searchQuery);
+            case 4 -> handleTranslationCommand(searchQuery);
+            case 5 -> handleGreetingsCommand();
+            case 6 -> handleExitCommand();
+            default -> handleUnknownCommand(searchQuery);
+        }
+    }
+
+    public void handlePlayMusicCommand() {
+        va.cmdExec("start chrome https://music.youtube.com/watch?list=RDAMVMljUtuoFt-8c");
+    }
+
+    public void handleTellJokeCommand() {
+        System.out.println(MCModel.getSentence(5, "okay heres the joke"));
+    }
+
+    public void handleWeatherForecastCommand() {
+        va.cmdExec("start chrome https://www.gismeteo.ua/");
+    }
+
+    public void handleSearchCommand(String searchQuery) {
+        va.cmdExec("start chrome https://www.google.com/search?q=" + va.getSubstringAfter(searchQuery, "search for"));
+    }
+
+    public void handleTranslationCommand(String searchQuery) {
+        va.cmdExec("start chrome https://www.deepl.com/en/translator#en/uk/" + va.getSubstringAfter(searchQuery, "translate"));
+    }
+
+    public void handleGreetingsCommand() {
+        va.startRecognizing();
+    }
+
+    public void handleExitCommand() {
+        va.stopRecognizing();
+        System.exit(0);
+    }
+
+    public void handleUnknownCommand(String searchQuery) {
+        System.err.printf("Command not found: %s...%n", searchQuery);
+        search.setEnabled(false);
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JTextField search;
-    // End of variables declaration                   
+    // End of variables declaration//GEN-END:variables
 }
