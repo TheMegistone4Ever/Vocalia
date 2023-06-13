@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 public class VocaliaMaven extends javax.swing.JFrame {
+
     private int mouseX, mouseY;
     private boolean isFullScreen = false;
     
@@ -27,13 +28,6 @@ public class VocaliaMaven extends javax.swing.JFrame {
         };
         menu1.initMenu(event);
         showForm(new InitForm());
-
-
-        /* Threads:
-            main
-            recognitionThread
-            Event Dispatch Thread
-         */
     }
 
     private void showForm(Component com) {

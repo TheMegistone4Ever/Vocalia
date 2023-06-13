@@ -19,17 +19,17 @@ import java.io.IOException;
  * @author Mykyta Kyselov - <a href="https://github.com/TheMegistone4Ever">Github</a>
  */
 public class VoiceAssistant {
+
     private final LiveSpeechRecognizer lsr;
-    public boolean isRecognizing;
+    private boolean isRecognizing;
 
     /**
      * Constructs a VoiceAssistant object with the specified parameters.
      *
      * @param dictFilename   A string representing the filename of the dictionary for speech recognition.
      * @param LMFilename     A string representing the filename of the language model for speech recognition.
-     * @throws IOException  If an I/O error occurs while reading the files.
      */
-    public VoiceAssistant(String dictFilename, String LMFilename) throws IOException {
+    public VoiceAssistant(String dictFilename, String LMFilename) {
         isRecognizing = false;
         Configuration config = new Configuration();
         config.setAcousticModelPath(
@@ -38,43 +38,28 @@ public class VoiceAssistant {
                 String.format("file:%s/src/main/java/com/nickmegistone/resources/%s", System.getProperty("user.dir"), dictFilename));
         config.setLanguageModelPath(
                 String.format("file:%s/src/main/java/com/nickmegistone/resources/%s", System.getProperty("user.dir"), LMFilename));
-        lsr = new LiveSpeechRecognizer(config);
+        try {
+            lsr = new LiveSpeechRecognizer(config);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
+    /**
+     * Retrieves the command from the voice recognition result.
+     *
+     * @return The command extracted from the voice recognition result, converted to lowercase.
+     */
     public String getCommand() {
         return lsr.getResult().getHypothesis().toLowerCase();
     }
 
     /**
-     * Starts the speech recognition process and performs tasks based on the recognized voice commands.
+     * Retrieves the code corresponding to the given voice command.
+     *
+     * @param voiceCommand The voice command to be checked for code mapping.
+     * @return The code associated with the voice command. Returns -1 if no matching code is found.
      */
-    /*public void startSpeechRecognizing() {
-        // lsr.startRecognition(true);
-        SpeechResult speechResult;
-        while ((speechResult = lsr.getResult()) != null) {
-            String voiceCommand = speechResult.getHypothesis().toLowerCase();
-            if (voiceCommand.contains("play music")) {
-                cmdExec("start chrome https://music.youtube.com/watch?list=RDAMVMljUtuoFt-8c");
-            } else if (voiceCommand.contains("tell me a joke")) {
-
-            } else if (voiceCommand.contains("weather forecast")) {
-                cmdExec("start chrome https://www.gismeteo.ua/");
-            } else if (voiceCommand.contains("search for")) {
-                cmdExec("start chrome https://www.google.com/search?q=" + getSubstringAfter(voiceCommand, "search for"));
-            } else if (voiceCommand.contains("translate")) {
-                cmdExec("start chrome https://www.deepl.com/en/translator#en/uk/" + getSubstringAfter(voiceCommand, "translate"));
-            } else if (voiceCommand.contains("hey vocalia")) {
-                playMP3("greetings.mp3");
-                // TODO: Add pointer to searchbar and voice-typing...
-            } else if (voiceCommand.contains("bye vocalia")) {
-                stopRecognizing();
-                System.exit(0);
-            } else {
-                System.err.printf("Command not found: %s...%n", voiceCommand);
-            }
-        }
-    }*/
-
     public int getCode(String voiceCommand) {
         if (voiceCommand.contains("play music")) {
             return 0;
@@ -92,6 +77,15 @@ public class VoiceAssistant {
             return 6;
         }
         return -1;
+    }
+
+    /**
+     * Checks if the voice recognition system is currently in the process of recognizing speech.
+     *
+     * @return true if the voice recognition system is currently recognizing speech, false otherwise.
+     */
+    public boolean isRecognizing() {
+        return isRecognizing;
     }
 
     /**
