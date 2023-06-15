@@ -20,9 +20,10 @@ public class ButtonMenu extends JButton {
     private float animateSize;
     private Point pressedPoint;
     private float alpha;
-    private final Color effectColor = new Color(173, 173, 173);
+    private final Color effectColor;
 
     public ButtonMenu() {
+        effectColor = new Color(173, 173, 173);
         setContentAreaFilled(false);
         setBorder(new EmptyBorder(8, 10, 8, 10));
         setHorizontalAlignment(JButton.LEFT);
@@ -52,7 +53,7 @@ public class ButtonMenu extends JButton {
                 repaint();
             }
         };
-        animator = new Animator(400, target);
+        animator = new Animator(800, target);
         animator.setResolution(0);
     }
 

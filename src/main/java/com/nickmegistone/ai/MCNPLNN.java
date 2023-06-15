@@ -62,11 +62,11 @@ public class MCNPLNN {
         List<String> text = new ArrayList<>(Collections.singletonList(start));
         for (int i = 0; i < maxTokens; ++i) {
             Map<String, Double> possibleWords = MCModel.get(text.get(text.size() - 1));
-            String word = (String) possibleWords.keySet().toArray()[getRandomIndexByWeights(possibleWords.values().stream().toList())];
-            if (word.equals(start)) {
+            String token = (String) possibleWords.keySet().toArray()[getRandomIndexByWeights(possibleWords.values().stream().toList())];
+            if (token.equals(start)) {
                 break;
             }
-            text.add(word);
+            text.add(token);
         }
         return StringUtils.capitalize(String.join(" ", text) + ".")
                 .replaceFirst(" Okay", " Okay,")

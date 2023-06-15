@@ -4,8 +4,8 @@
  */
 package com.nickmegistone.ai;
 
+import com.nickmegistone.sphinxextextention.LiveSpeechRecognizerExtension;
 import edu.cmu.sphinx.api.Configuration;
-import edu.cmu.sphinx.api.LiveSpeechRecognizer;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.advanced.AdvancedPlayer;
 import org.jetbrains.annotations.NotNull;
@@ -20,8 +20,7 @@ import java.io.IOException;
  */
 public class VoiceAssistant {
 
-    private final LiveSpeechRecognizer lsr;
-    private boolean isRecognizing;
+    private final LiveSpeechRecognizerExtension lsr;
 
     /**
      * Constructs a VoiceAssistant object with the specified parameters.
@@ -30,16 +29,15 @@ public class VoiceAssistant {
      * @param LMFilename     A string representing the filename of the language model for speech recognition.
      */
     public VoiceAssistant(String dictFilename, String LMFilename) {
-        isRecognizing = false;
-        Configuration config = new Configuration();
-        config.setAcousticModelPath(
+        Configuration configuration = new Configuration();
+        configuration.setAcousticModelPath(
                 String.format("resource:%s", "/edu/cmu/sphinx/models/en-us/en-us"));
-        config.setDictionaryPath(
+        configuration.setDictionaryPath(
                 String.format("file:%s/src/main/java/com/nickmegistone/resources/%s", System.getProperty("user.dir"), dictFilename));
-        config.setLanguageModelPath(
+        configuration.setLanguageModelPath(
                 String.format("file:%s/src/main/java/com/nickmegistone/resources/%s", System.getProperty("user.dir"), LMFilename));
         try {
-            lsr = new LiveSpeechRecognizer(config);
+            lsr = new LiveSpeechRecognizerExtension(configuration);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -60,7 +58,7 @@ public class VoiceAssistant {
      * @param voiceCommand The voice command to be checked for code mapping.
      * @return The code associated with the voice command. Returns -1 if no matching code is found.
      */
-    public int getCode(String voiceCommand) {
+    public int getCode(@NotNull String voiceCommand) {
         if (voiceCommand.contains("play music")) {
             return 0;
         } else if (voiceCommand.contains("tell me a joke")) {
@@ -80,20 +78,10 @@ public class VoiceAssistant {
     }
 
     /**
-     * Checks if the voice recognition system is currently in the process of recognizing speech.
-     *
-     * @return true if the voice recognition system is currently recognizing speech, false otherwise.
-     */
-    public boolean isRecognizing() {
-        return isRecognizing;
-    }
-
-    /**
      * Starts the speech recognition process.
      */
     public void startRecognizing() {
-        isRecognizing = true;
-        lsr.startRecognition(true);
+        lsr.startRecognition();
         playMP3("greetings.mp3");
     }
 
@@ -101,7 +89,6 @@ public class VoiceAssistant {
      * Stops the speech recognition process.
      */
     public void stopRecognizing() {
-        isRecognizing = false;
         lsr.stopRecognition();
         playMP3("farewell.mp3");
     }
@@ -126,7 +113,7 @@ public class VoiceAssistant {
      * @param searchTerm    The search term to find the substring after.
      * @return              The substring after the search term.
      */
-    public @NotNull String getSubstringAfter(@NotNull String input, String searchTerm) {
+    public @NotNull String getSubstringAfter(@NotNull String input, @NotNull String searchTerm) {
         if (input.length() <= searchTerm.length()) return input;
         return input
                 .substring(input.indexOf(searchTerm) + searchTerm.length())

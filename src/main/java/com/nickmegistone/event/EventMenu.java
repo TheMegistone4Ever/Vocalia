@@ -6,5 +6,5 @@ import java.io.IOException;
 
 public interface EventMenu {
 
-    public void selected(int index) throws IOException, JavaLayerException;
+    void selected(int index) throws IOException, JavaLayerException;
 }

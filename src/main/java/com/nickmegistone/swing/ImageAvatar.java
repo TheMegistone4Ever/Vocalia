@@ -23,20 +23,16 @@ public class ImageAvatar extends JComponent {
             int width = getWidth();
             int height = getHeight();
             int diameter = Math.min(width, height);
-            int x = width / 2 - diameter / 2;
-            int y = height / 2 - diameter / 2;
-            int border = borderSize * 2;
+            int x = (width >> 1) - (diameter >> 1);
+            int y = (height >> 1) - (diameter >> 1);
+            int border = borderSize << 1;
             diameter -= border;
             Rectangle size = getAutoSize(icon, diameter);
             BufferedImage img = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2_img = img.createGraphics();
-            g2_img.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2_img.fillOval(0, 0, diameter, diameter);
-            Composite composite = g2_img.getComposite();
             g2_img.setComposite(AlphaComposite.SrcIn);
-            g2_img.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            g2_img.drawImage(toImage(icon), size.x, size.y, size.width, size.height, null);
-            g2_img.setComposite(composite);
+            g2_img.drawImage(((ImageIcon) icon).getImage(), size.x, size.y, size.width, size.height, null);
             g2_img.dispose();
             Graphics2D g2 = (Graphics2D) graphics;
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -51,6 +47,7 @@ public class ImageAvatar extends JComponent {
                 g2.fillOval(x + borderSize, y + borderSize, diameter, diameter);
             }
             g2.drawImage(img, x + borderSize, y + borderSize, null);
+            g2.dispose();
         }
         super.paintComponent(graphics);
     }
@@ -61,10 +58,6 @@ public class ImageAvatar extends JComponent {
         double scale = Math.max((double) size / iw, (double) size / ih);
         int width = Math.max(1, (int) (scale * iw));
         int height = Math.max(1, (int) (scale * ih));
-        return new Rectangle(new Point(size - width >> 1, size - height >> 1), new Dimension(width, height));
-    }
-
-    private Image toImage(Icon icon) {
-        return ((ImageIcon) icon).getImage();
+        return new Rectangle((size - width) >> 1, (size - height) >> 1, width, height);
     }
 }
