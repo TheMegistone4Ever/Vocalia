@@ -2,6 +2,7 @@ package com.nickmegistone.form;
 
 import com.nickmegistone.ai.MCNPLNN;
 import com.nickmegistone.ai.VoiceAssistant;
+import com.nickmegistone.swing.scrollbar.ScrollBarCustom;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,6 +48,9 @@ public class InitForm extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        vocaliaAnswer = new javax.swing.JTextArea();
 
         setForeground(new java.awt.Color(0, 102, 102));
         setMinimumSize(new java.awt.Dimension(0, 0));
@@ -57,17 +61,17 @@ public class InitForm extends javax.swing.JPanel {
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", Font.BOLD, 48)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 102, 153));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Welcome to Vocalia!");
+        jLabel2.setText("Vocalia's answers will appear here:");
         jLabel2.setMaximumSize(new java.awt.Dimension(32767, 64));
         jLabel2.setRequestFocusEnabled(false);
 
         search.setBackground(new java.awt.Color(0, 102, 102));
-        search.setFont(new java.awt.Font("Segoe UI", Font.PLAIN, 18)); // NOI18N
+        search.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         search.setForeground(new java.awt.Color(255, 255, 255));
-        search.setText("Send");
+        search.setText("Send...");
         search.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         search.setCaretColor(new java.awt.Color(255, 102, 0));
         search.setDisabledTextColor(new java.awt.Color(0, 102, 102));
@@ -86,10 +90,10 @@ public class InitForm extends javax.swing.JPanel {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", Font.BOLD | Font.ITALIC, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 102, 153));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("To aks a question insert text into \"Search\" field or say \"Hey, Vocalia!\" and ask it by voice...");
+        jLabel1.setText("To aks a question insert text into \"Search\" field or ask it by voice button =)");
         jLabel1.setMaximumSize(new java.awt.Dimension(32767, 16));
 
         jLabel3.setBackground(new java.awt.Color(0, 0, 0));
@@ -114,6 +118,29 @@ public class InitForm extends javax.swing.JPanel {
             }
         });
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(0, 102, 153));
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("Welcome to Vocalia!");
+        jLabel5.setMaximumSize(new java.awt.Dimension(32767, 64));
+        jLabel5.setRequestFocusEnabled(false);
+
+        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane2.setVerticalScrollBar(new ScrollBarCustom(new Color(130, 130, 130, 100)));
+
+        vocaliaAnswer.setEditable(false);
+        vocaliaAnswer.setBackground(new java.awt.Color(25, 25, 25));
+        vocaliaAnswer.setColumns(20);
+        vocaliaAnswer.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        vocaliaAnswer.setForeground(new java.awt.Color(255, 255, 255));
+        vocaliaAnswer.setLineWrap(true);
+        vocaliaAnswer.setRows(5);
+        vocaliaAnswer.setText("A very witty, self-sufficient and self-explanatory response from Vocalia the Oracle...");
+        vocaliaAnswer.setWrapStyleWord(true);
+        vocaliaAnswer.setMaximumSize(new java.awt.Dimension(2147483647, 200));
+        vocaliaAnswer.setPreferredSize(new java.awt.Dimension(800, 200));
+        jScrollPane2.setViewportView(vocaliaAnswer);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -122,20 +149,23 @@ public class InitForm extends javax.swing.JPanel {
                 .addGap(50, 50, 50)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 914, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
                         .addComponent(search, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(4, 4, 4)))
+                        .addGap(4, 4, 4))
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2))
                 .addGap(60, 60, 60))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -143,7 +173,11 @@ public class InitForm extends javax.swing.JPanel {
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(522, Short.MAX_VALUE))
+                .addGap(48, 48, 48)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(290, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -179,7 +213,7 @@ public class InitForm extends javax.swing.JPanel {
 
     private void handleCommand(String searchQuery) {
         int code = va.getCode(searchQuery);
-        search.setText(code != -1 ? searchQuery : String.format("I don't understand your command: %s!", searchQuery));
+        search.setText(searchQuery);
         switch (code) {
             case 0 -> handlePlayMusicCommand();
             case 1 -> handleTellJokeCommand();
@@ -193,26 +227,31 @@ public class InitForm extends javax.swing.JPanel {
     }
 
     public void handlePlayMusicCommand() {
+        vocaliaAnswer.setText("Right now your loudspeakers are playing wonderful songs via Youtube Music, enjoy it ;)");
         va.cmdExec("start chrome https://music.youtube.com/watch?list=RDAMVMljUtuoFt-8c");
     }
 
     public void handleTellJokeCommand() {
-        System.out.println(MCModel.getSentence(5, "okay heres the joke"));
+        vocaliaAnswer.setText(MCModel.getSentence(5, "okay heres the joke"));
     }
 
     public void handleWeatherForecastCommand() {
+        vocaliaAnswer.setText("Running Gismeteo weather services for forecasts...");
         va.cmdExec("start chrome https://www.gismeteo.ua/");
     }
 
     public void handleSearchCommand(String searchQuery) {
+        vocaliaAnswer.setText("Running the Google browser to search for this information...");
         va.cmdExec("start chrome https://www.google.com/search?q=" + va.getSubstringAfter(searchQuery, "search for"));
     }
 
     public void handleTranslationCommand(String searchQuery) {
+        vocaliaAnswer.setText("Running DeepL translator to translate this information from English to Ukrainian...");
         va.cmdExec("start chrome https://www.deepl.com/en/translator#en/uk/" + va.getSubstringAfter(searchQuery, "translate"));
     }
 
     public void handleGreetingsCommand() {
+        vocaliaAnswer.setText("Hello =)");
         va.startRecognizing();
     }
 
@@ -223,6 +262,7 @@ public class InitForm extends javax.swing.JPanel {
     }
 
     public void handleUnknownCommand(String searchQuery) {
+        vocaliaAnswer.setText(String.format("I don't understand you: %s ;(", searchQuery));
         System.err.printf("Command not found: %s...%n", searchQuery);
         search.setEnabled(false);
         va.playMP3("farewell.mp3");
@@ -233,6 +273,9 @@ public class InitForm extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField search;
+    private javax.swing.JTextArea vocaliaAnswer;
     // End of variables declaration//GEN-END:variables
 }

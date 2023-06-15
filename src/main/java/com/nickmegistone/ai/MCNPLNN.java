@@ -75,7 +75,7 @@ public class MCNPLNN {
                 .replaceFirst(" it", ", it")
                 .replaceFirst(" because", "? - because")
                 .replaceFirst(" youre", ", you're")
-                .replaceFirst(" haha", String.format(" - %sha-ha%s,", getFunnyEmoji(), getFunnyEmoji()));
+                .replaceFirst(" haha", " - =) ha-ha ;),");
     }
 
     /**
@@ -116,14 +116,5 @@ public class MCNPLNN {
             }
         }
         return i;
-    }
-
-    /**
-     * This function returns a random funny emoji.
-     *
-     * @return A string representing a funny emoji.
-     */
-    private String getFunnyEmoji() {
-        return new String[]{"😄", "😂", "😊", "😜", "🤣", "😎", "🤪", "😆", "😁", "🤩"}[random.nextInt(10)];
     }
 }

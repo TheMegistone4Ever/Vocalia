@@ -6,10 +6,10 @@ import javax.swing.JScrollBar;
 
 public class ScrollBarCustom extends JScrollBar {
 
-    public ScrollBarCustom() {
+    public ScrollBarCustom(Color color) {
         setUI(new ModernScrollBarUI());
         setPreferredSize(new Dimension(5, 5));
-        setForeground(new Color(94, 139, 231));
+        setForeground(color);
         setUnitIncrement(20);
         setOpaque(false);
     }

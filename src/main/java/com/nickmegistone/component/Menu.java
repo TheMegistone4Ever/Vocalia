@@ -17,9 +17,7 @@ public class Menu extends javax.swing.JPanel {
     public Menu() {
         initComponents();
         setOpaque(false);
-        ScrollBarCustom sb = new ScrollBarCustom();
-        sb.setForeground(new Color(130, 130, 130, 100));
-        jScrollPane1.setVerticalScrollBar(sb);
+        jScrollPane1.setVerticalScrollBar(new ScrollBarCustom(new Color(130, 130, 130, 100)));
         panelMenu.setLayout(new MigLayout("wrap, fillx, inset 3", "[fill]", "[]0[]"));
     }
 
