@@ -1,10 +1,15 @@
 package com.nickmegistone.swing;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class ImageAvatar extends JComponent {
+
+    private Icon icon;
+    private int borderSize;
 
     public void setIcon(Icon icon) {
         this.icon = icon;
@@ -14,8 +19,6 @@ public class ImageAvatar extends JComponent {
     public void setBorderSize(int borderSize) {
         this.borderSize = borderSize;
     }
-    private Icon icon;
-    private int borderSize;
 
     @Override
     protected void paintComponent(Graphics graphics) {
@@ -52,7 +55,7 @@ public class ImageAvatar extends JComponent {
         super.paintComponent(graphics);
     }
 
-    private Rectangle getAutoSize(Icon image, int size) {
+    private @NotNull Rectangle getAutoSize(@NotNull Icon image, int size) {
         int iw = image.getIconWidth();
         int ih = image.getIconHeight();
         double scale = Math.max((double) size / iw, (double) size / ih);

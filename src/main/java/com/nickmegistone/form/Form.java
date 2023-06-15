@@ -15,7 +15,7 @@ public class Form extends javax.swing.JPanel {
 
         jLabel1 = new javax.swing.JLabel();
 
-        jLabel1.setFont(new java.awt.Font("sansserif", 1, 48)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("sansserif", Font.BOLD, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(137, 137, 137));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Form");

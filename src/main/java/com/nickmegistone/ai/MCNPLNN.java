@@ -23,8 +23,8 @@ public class MCNPLNN {
     /**
      * This constructor creates a Markov Chain model object from a file of raw text.
      *
-     * @param filename  A filename that will be a list of cleaned words to be used as the basis for the model.
-     * @param nGram     An integer representing the number of words in each state. Default value is 3.
+     * @param filename A filename that will be a list of cleaned words to be used as the basis for the model.
+     * @param nGram    An integer representing the number of words in each state. Default value is 3.
      */
     public MCNPLNN(String filename, int nGram) {
         random = new Random();
@@ -51,9 +51,9 @@ public class MCNPLNN {
     /**
      * This function generates a string of text based on a Markov chain model.
      *
-     * @param maxTokens   An integer representing the maximum tokens in the generated text. Default value is 30.
-     * @param start   A string representing the initial state to begin text generation. Default value is "для вашого організму".
-     * @return A processed string of generated text.
+     * @param maxTokens An integer representing the maximum tokens in the generated text. Default value is 30.
+     * @param start     A string representing the initial state to begin text generation.
+     * @return          A processed string of generated text.
      */
     public String getSentence(int maxTokens, @NotNull String start) {
         if (start.chars().filter(ch -> ch == ' ').count() + 1 != nGram) {

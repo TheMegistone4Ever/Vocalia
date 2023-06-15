@@ -11,7 +11,7 @@ public class InitForm extends javax.swing.JPanel {
 
     private VoiceAssistant va;
     private final MCNPLNN MCModel;
-    Thread recognitionThread;
+    private Thread recognitionThread;
     private final Object lock = new Object(); // Object to synchronize the threads
 
     public InitForm() {
@@ -24,7 +24,7 @@ public class InitForm extends javax.swing.JPanel {
             synchronized (lock) {
                 va.startRecognizing();
                 try {
-                    while (true) {
+                    while (!recognitionThread.isInterrupted()) {
                         lock.wait();
                         jLabel3.setEnabled(false);
                         handleCommand(va.getCommand());
@@ -178,12 +178,7 @@ public class InitForm extends javax.swing.JPanel {
 
     private void handleCommand(String searchQuery) {
         int code = va.getCode(searchQuery);
-        if (code != -1) {
-            search.setText(searchQuery);
-        } else {
-            search.setText("I don't understand your command!");
-            va.playMP3("farewell.mp3");
-        }
+        search.setText(code != -1 ? searchQuery : String.format("I don't understand your command: %s!", searchQuery));
         switch (code) {
             case 0 -> handlePlayMusicCommand();
             case 1 -> handleTellJokeCommand();
@@ -221,6 +216,7 @@ public class InitForm extends javax.swing.JPanel {
     }
 
     public void handleExitCommand() {
+        recognitionThread.interrupt();
         va.stopRecognizing();
         System.exit(0);
     }
@@ -228,6 +224,7 @@ public class InitForm extends javax.swing.JPanel {
     public void handleUnknownCommand(String searchQuery) {
         System.err.printf("Command not found: %s...%n", searchQuery);
         search.setEnabled(false);
+        va.playMP3("farewell.mp3");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

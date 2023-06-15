@@ -4,7 +4,7 @@
  */
 package com.nickmegistone.ai;
 
-import com.nickmegistone.sphinxextextention.LiveSpeechRecognizerExtension;
+import com.nickmegistone.sphinxextextension.LiveSpeechRecognizerExtension;
 import edu.cmu.sphinx.api.Configuration;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.advanced.AdvancedPlayer;
@@ -25,8 +25,8 @@ public class VoiceAssistant {
     /**
      * Constructs a VoiceAssistant object with the specified parameters.
      *
-     * @param dictFilename   A string representing the filename of the dictionary for speech recognition.
-     * @param LMFilename     A string representing the filename of the language model for speech recognition.
+     * @param dictFilename A string representing the filename of the dictionary for speech recognition.
+     * @param LMFilename   A string representing the filename of the language model for speech recognition.
      */
     public VoiceAssistant(String dictFilename, String LMFilename) {
         Configuration configuration = new Configuration();
@@ -96,7 +96,7 @@ public class VoiceAssistant {
     /**
      * Executes a command in the command prompt.
      *
-     * @param command       A string representing the command to be executed.
+     * @param command A string representing the command to be executed.
      */
     public void cmdExec(String command) {
         try {
@@ -109,9 +109,9 @@ public class VoiceAssistant {
     /**
      * Retrieves the substring after a specified search term in a given input string.
      *
-     * @param input         The input string to search within.
-     * @param searchTerm    The search term to find the substring after.
-     * @return              The substring after the search term.
+     * @param input      The input string to search within.
+     * @param searchTerm The search term to find the substring after.
+     * @return           The substring after the search term.
      */
     public @NotNull String getSubstringAfter(@NotNull String input, @NotNull String searchTerm) {
         if (input.length() <= searchTerm.length()) return input;
@@ -124,7 +124,7 @@ public class VoiceAssistant {
     /**
      * Plays an MP3 file.
      *
-     * @param filename   A string representing the filename of the MP3 file to be played.
+     * @param filename A string representing the filename of the MP3 file to be played.
      */
     public void playMP3(String filename) {
         try (FileInputStream in = new FileInputStream(String.format("%s/src/main/java/com/nickmegistone/resources/%s", System.getProperty("user.dir"), filename))) {
