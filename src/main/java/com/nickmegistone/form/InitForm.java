@@ -12,10 +12,11 @@ public class InitForm extends javax.swing.JPanel {
     private VoiceAssistant va;
     private final MCNPLNN MCModel;
     private Thread recognitionThread;
-    private final Object lock = new Object(); // Object to synchronize the threads
+    private final Object lock; // Object to synchronize the threads
 
     public InitForm() {
         initComponents();
+        lock = new Object();
         MCModel = new MCNPLNN("mctext.txt", 4);
         setOpaque(false);
         recognitionThread = new Thread(() -> {
