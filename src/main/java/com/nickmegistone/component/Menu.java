@@ -3,12 +3,10 @@ package com.nickmegistone.component;
 import com.nickmegistone.event.EventMenu;
 import com.nickmegistone.swing.ButtonMenu;
 import com.nickmegistone.swing.scrollbar.ScrollBarCustom;
-import javazoom.jl.decoder.JavaLayerException;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 
 public class Menu extends javax.swing.JPanel {
 
@@ -42,11 +40,7 @@ public class Menu extends javax.swing.JPanel {
         menu.setFont(new Font("Segoe UI", Font.BOLD, 18));
         panelMenu.add(menu);
         menu.addActionListener(ae -> {
-            try {
-                event.selected(index);
-            } catch (IOException | JavaLayerException e) {
-                throw new RuntimeException(e);
-            }
+            event.selected(index);
             setSelected(menu);
         });
     }

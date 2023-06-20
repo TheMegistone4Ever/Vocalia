@@ -9,7 +9,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16</maven.compiler.target>
-        <exec.mainClass>com.nickmegistone.vocaliamaven.VocaliaMaven</exec.mainClass>
+        <exec.mainClass>com.nickmegistone.vocaliamaven.Vocalia</exec.mainClass>
     </properties>
     <dependencies>
         <dependency>

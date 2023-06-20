@@ -11,12 +11,12 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
-public class VocaliaMaven extends javax.swing.JFrame {
+public class Vocalia extends javax.swing.JFrame {
 
     private int mouseX, mouseY;
     private boolean isFullScreen = false;
     
-    public VocaliaMaven() throws IOException, JavaLayerException {
+    public Vocalia() throws IOException, JavaLayerException {
         initComponents();
         setBackground(new Color(0, 0, 0, 0));
         EventMenu event = index -> {
@@ -169,15 +169,15 @@ public class VocaliaMaven extends javax.swing.JFrame {
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
                  UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VocaliaMaven.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Vocalia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            VocaliaMaven vocalia;
+            Vocalia vocalia;
             try {
-                vocalia = new VocaliaMaven();
+                vocalia = new Vocalia();
             } catch (IOException | JavaLayerException e) {
                 throw new RuntimeException(e);
             }

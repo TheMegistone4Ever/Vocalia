@@ -237,7 +237,7 @@ public class InitForm extends javax.swing.JPanel {
 
     public void handleWeatherForecastCommand() {
         vocaliaAnswer.setText("Running Gismeteo weather services for forecasts...");
-        va.cmdExec("start chrome https://www.gismeteo.ua/");
+        va.cmdExec("start chrome https://www.gismeteo.com/");
     }
 
     public void handleSearchCommand(String searchQuery) {
