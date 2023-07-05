@@ -4,7 +4,7 @@
  */
 package com.nickmegistone.ai;
 
-import com.nickmegistone.sphinxextextension.LiveSpeechRecognizerExtension;
+import com.nickmegistone.ai.sphinxextextension.LiveSpeechRecognizerExtension;
 import edu.cmu.sphinx.api.Configuration;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.advanced.AdvancedPlayer;
@@ -18,7 +18,7 @@ import java.io.IOException;
  *
  * @author Mykyta Kyselov - <a href="https://github.com/TheMegistone4Ever">Github</a>
  */
-public class VoiceAssistant {
+public final class VoiceAssistant {
 
     private final LiveSpeechRecognizerExtension lsr;
 

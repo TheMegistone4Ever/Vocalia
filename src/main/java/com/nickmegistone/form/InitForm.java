@@ -61,7 +61,7 @@ public class InitForm extends javax.swing.JPanel {
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Segoe UI", Font.PLAIN, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 102, 153));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Vocalia's answers will appear here:");
@@ -69,7 +69,7 @@ public class InitForm extends javax.swing.JPanel {
         jLabel2.setRequestFocusEnabled(false);
 
         search.setBackground(new java.awt.Color(0, 102, 102));
-        search.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        search.setFont(new java.awt.Font("Segoe UI", Font.PLAIN, 18)); // NOI18N
         search.setForeground(new java.awt.Color(255, 255, 255));
         search.setText("Send...");
         search.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -90,7 +90,7 @@ public class InitForm extends javax.swing.JPanel {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", Font.PLAIN, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 102, 153));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("To aks a question insert text into \"Search\" field or ask it by voice button =)");
@@ -118,7 +118,7 @@ public class InitForm extends javax.swing.JPanel {
             }
         });
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Segoe UI", Font.BOLD, 48)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 102, 153));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("Welcome to Vocalia!");
@@ -131,7 +131,7 @@ public class InitForm extends javax.swing.JPanel {
         vocaliaAnswer.setEditable(false);
         vocaliaAnswer.setBackground(new java.awt.Color(25, 25, 25));
         vocaliaAnswer.setColumns(20);
-        vocaliaAnswer.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        vocaliaAnswer.setFont(new java.awt.Font("Segoe UI", Font.PLAIN, 24)); // NOI18N
         vocaliaAnswer.setForeground(new java.awt.Color(255, 255, 255));
         vocaliaAnswer.setLineWrap(true);
         vocaliaAnswer.setRows(5);
@@ -207,7 +207,7 @@ public class InitForm extends javax.swing.JPanel {
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
         System.out.println(evt);
         synchronized (lock) {
-            lock.notify(); // Notify the recognition thread
+            lock.notifyAll(); // Notify the recognition thread
         }
     }//GEN-LAST:event_jLabel3MouseClicked
 

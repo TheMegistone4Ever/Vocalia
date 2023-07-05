@@ -20,7 +20,7 @@
         <dependency>
             <groupId>com.miglayout</groupId>
             <artifactId>miglayout-swing</artifactId>
-            <version>5.1</version>
+            <version>11.0</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.external</groupId>
@@ -50,12 +50,12 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math3</artifactId>
-            <version>3.2</version>
+            <version>3.6.1</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>24.0.0</version>
+            <version>24.0.1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

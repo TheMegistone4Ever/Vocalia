@@ -60,10 +60,10 @@ public class ButtonMenu extends JButton {
     @Override
     protected void paintComponent(Graphics graphics) {
         Graphics2D g2 = (Graphics2D) graphics;
-        g2.setColor(effectColor);
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, alpha));
         if (pressedPoint != null) {
             Area area = new Area(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 10, 10));
+            g2.setColor(effectColor);
             area.intersect(new Area(new Ellipse2D.Double((pressedPoint.x - animateSize / 2), (pressedPoint.y - animateSize / 2), animateSize, animateSize)));
             g2.fill(area);
         }

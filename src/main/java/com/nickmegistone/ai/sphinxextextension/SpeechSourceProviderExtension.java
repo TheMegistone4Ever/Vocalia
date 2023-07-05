@@ -1,4 +1,4 @@
-package com.nickmegistone.sphinxextextension;
+package com.nickmegistone.ai.sphinxextextension;
 
 import edu.cmu.sphinx.api.Microphone;
 

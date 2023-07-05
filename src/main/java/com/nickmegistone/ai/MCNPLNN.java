@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
  * @author Mykyta Kyselov - <a href="https://github.com/TheMegistone4Ever">Github</a>
  */
 public class MCNPLNN {
+
     private final Random random;
     private final Map<String, Map<String, Double>> MCModel;
     private final int nGram;
@@ -109,7 +110,7 @@ public class MCNPLNN {
      */
     private int getRandomIndexByWeights(@NotNull List<Double> probabilities) {
         int i = 0;
-        for (double cumulativeProbability = .0, rnd = random.nextDouble(); i < probabilities.size(); ++i) {
+        for (double cumulativeProbability = 0, rnd = random.nextDouble(); i < probabilities.size(); ++i) {
             cumulativeProbability += probabilities.get(i);
             if (rnd < cumulativeProbability) {
                 break;

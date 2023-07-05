@@ -11,12 +11,39 @@ import java.awt.*;
 public class Menu extends javax.swing.JPanel {
 
     private EventMenu event;
+    private final Object lock; // Object to synchronize the threads
+    private Thread menuThread;
+    long MILLIS = 5000;
 
     public Menu() {
         initComponents();
         setOpaque(false);
         jScrollPane1.setVerticalScrollBar(new ScrollBarCustom(new Color(130, 130, 130, 100)));
         panelMenu.setLayout(new MigLayout("wrap, fillx, inset 3", "[fill]", "[]0[]"));
+        lock = new Object();
+        menuThread = new Thread(() -> {
+            synchronized (lock) {
+                try {
+                    while (!menuThread.isInterrupted()) {
+                        lock.wait();
+                        for (Component com : panelMenu.getComponents()) {
+                            if (com instanceof ButtonMenu b) {
+                                b.setEnabled(false);
+                            }
+                        }
+                        sleep(MILLIS);
+                        for (Component com : panelMenu.getComponents()) {
+                            if (com instanceof ButtonMenu b) {
+                                b.setEnabled(true);
+                            }
+                        }
+                    }
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        menuThread.start();
     }
 
     public void initMenu(EventMenu event) {
@@ -42,7 +69,22 @@ public class Menu extends javax.swing.JPanel {
         menu.addActionListener(ae -> {
             event.selected(index);
             setSelected(menu);
+            setAllTemporarilyOff();
         });
+    }
+
+    private void setAllTemporarilyOff() {
+        synchronized (lock) {
+            lock.notifyAll();
+        }
+    }
+
+    private void sleep(long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void setSelected(ButtonMenu menu) {
