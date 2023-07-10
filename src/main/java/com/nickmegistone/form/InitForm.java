@@ -2,6 +2,7 @@ package com.nickmegistone.form;
 
 import com.nickmegistone.ai.GoogleTranslator;
 import com.nickmegistone.ai.MCNPLNN;
+import com.nickmegistone.ai.OWMForecaster;
 import com.nickmegistone.ai.VoiceAssistant;
 import com.nickmegistone.swing.scrollbar.ScrollBarCustom;
 
@@ -12,24 +13,26 @@ import java.awt.event.KeyEvent;
 public class InitForm extends javax.swing.JPanel {
 
     private VoiceAssistant va;
-    private final MCNPLNN MCModel;
-    private final GoogleTranslator googleTranslator;
-    private Thread recognitionThread;
+    private MCNPLNN MCModel;
+    private GoogleTranslator googleTranslator;
+    private OWMForecaster owmForecaster;
+    private Thread commandProcessingAndVoiceRecognitionThread;
     private final Object lock;
 
     public InitForm() {
         initComponents();
         lock = new Object();
-        MCModel = new MCNPLNN("mctext.txt", 4);
-        googleTranslator = new GoogleTranslator("AKfycbxiVh8Fxy0opG1ygpNdNBaD9t_HC0nqk5IElpLLpgPMdpks_7E8hcH4N74065VJFohn");
         setOpaque(false);
-        recognitionThread = new Thread(() -> {
+        commandProcessingAndVoiceRecognitionThread = new Thread(() -> {
             va = new VoiceAssistant("dict.dic", "language-model.lm");
             jLabel3.setEnabled(true);
+            va.startRecognizing();
+            MCModel = new MCNPLNN("mctext.txt", 4);
+            googleTranslator = new GoogleTranslator("AKfycbxiVh8Fxy0opG1ygpNdNBaD9t_HC0nqk5IElpLLpgPMdpks_7E8hcH4N74065VJFohn");
+            owmForecaster = new OWMForecaster("bcebc1ab15b0bf", "5a38a0988a6a37301a3b4963d6106fa2");
             synchronized (lock) {
-                va.startRecognizing();
                 try {
-                    while (!recognitionThread.isInterrupted()) {
+                    while (!commandProcessingAndVoiceRecognitionThread.isInterrupted()) {
                         lock.wait();
                         jLabel3.setEnabled(false);
                         handleCommand(va.getCommand());
@@ -40,7 +43,7 @@ public class InitForm extends javax.swing.JPanel {
                 }
             }
         });
-        recognitionThread.start();
+        commandProcessingAndVoiceRecognitionThread.start();
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -140,8 +143,6 @@ public class InitForm extends javax.swing.JPanel {
         vocaliaAnswer.setRows(5);
         vocaliaAnswer.setText("A very witty, self-sufficient and self-explanatory response from Vocalia the Oracle...");
         vocaliaAnswer.setWrapStyleWord(true);
-        vocaliaAnswer.setMaximumSize(new java.awt.Dimension(2147483647, 200));
-        vocaliaAnswer.setPreferredSize(new java.awt.Dimension(800, 200));
         jScrollPane2.setViewportView(vocaliaAnswer);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -238,11 +239,7 @@ public class InitForm extends javax.swing.JPanel {
     }
 
     public void handleWeatherForecastCommand() {
-        vocaliaAnswer.setText("Running Gismeteo weather services for forecasts...");
-        va.cmdExec("start chrome https://www.gismeteo.com/");
-
-        // gismeteo api for forecasting weather using current GPS
-
+        vocaliaAnswer.setText(owmForecaster.forecast());
     }
 
     public void handleSearchCommand(String searchQuery) {
@@ -260,7 +257,7 @@ public class InitForm extends javax.swing.JPanel {
     }
 
     public void handleExitCommand() {
-        recognitionThread.interrupt();
+        commandProcessingAndVoiceRecognitionThread.interrupt();
         va.stopRecognizing();
         System.exit(0);
     }

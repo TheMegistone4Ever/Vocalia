@@ -13,10 +13,10 @@ import java.nio.charset.StandardCharsets;
 
 public class GoogleTranslator {
 
-    private final String deployID;
+    private final String deployId;
 
-    public GoogleTranslator(String deployID) {
-        this.deployID = deployID;
+    public GoogleTranslator(String deployId) {
+        this.deployId = deployId;
     }
 
     public @NotNull String translate(String langFrom, String langTo, String text) {
@@ -24,7 +24,7 @@ public class GoogleTranslator {
         try {
             HttpURLConnection con = (HttpURLConnection) new URL(
                     String.format("https://script.google.com/macros/s/%s/exec?q=%s&target=%s&source=%s",
-                            deployID,
+                            deployId,
                             URLEncoder.encode(text, StandardCharsets.UTF_8),
                             langTo,
                             langFrom
