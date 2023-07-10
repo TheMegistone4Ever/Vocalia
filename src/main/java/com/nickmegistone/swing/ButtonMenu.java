@@ -21,8 +21,10 @@ public class ButtonMenu extends JButton {
     private Point pressedPoint;
     private float alpha;
     private final Color effectColor;
+    private final int index;
 
-    public ButtonMenu() {
+    public ButtonMenu(int index) {
+        this.index = index;
         effectColor = new Color(173, 173, 173);
         setContentAreaFilled(false);
         setBorder(new EmptyBorder(8, 10, 8, 10));
@@ -55,6 +57,10 @@ public class ButtonMenu extends JButton {
         };
         animator = new Animator(800, target);
         animator.setResolution(0);
+    }
+
+    public int getIndex() {
+        return index;
     }
 
     @Override

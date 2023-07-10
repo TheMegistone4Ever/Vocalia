@@ -1,6 +1,5 @@
 package com.nickmegistone.vocaliamaven;
 
-import com.nickmegistone.event.EventMenu;
 import com.nickmegistone.form.Form;
 import com.nickmegistone.form.InitForm;
 import javazoom.jl.decoder.JavaLayerException;
@@ -15,18 +14,19 @@ public class Vocalia extends javax.swing.JFrame {
 
     private int mouseX, mouseY;
     private boolean isFullScreen = false;
+    private final InitForm initForm;
     
     public Vocalia() throws IOException, JavaLayerException {
         initComponents();
         setBackground(new Color(0, 0, 0, 0));
-        EventMenu event = index -> {
+        initForm = new InitForm();
+        menu1.initMenu(index -> {
             if (index == 0) {
-                showForm(new InitForm());
+                showForm(initForm);
             } else {
                 showForm(new Form(index));
             }
-        };
-        menu1.initMenu(event);
+        });
         showForm(new InitForm());
     }
 
@@ -42,7 +42,7 @@ public class Vocalia extends javax.swing.JFrame {
 
         com.nickmegistone.swing.RoundPanel roundPanel1 = new com.nickmegistone.swing.RoundPanel();
         menu1 = new com.nickmegistone.component.Menu();
-        body = new javax.swing.JPanel();
+        body = new com.nickmegistone.swing.RoundPanel();
         JButton jButton1 = new JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -187,7 +187,7 @@ public class Vocalia extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel body;
+    private com.nickmegistone.swing.RoundPanel body;
     private com.nickmegistone.component.Menu menu1;
     // End of variables declaration//GEN-END:variables
 }

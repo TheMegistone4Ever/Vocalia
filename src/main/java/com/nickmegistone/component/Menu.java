@@ -11,11 +11,13 @@ import java.awt.*;
 public class Menu extends javax.swing.JPanel {
 
     private EventMenu event;
-    private final Object lock; // Object to synchronize the threads
+    private final Object lock;
     private Thread menuThread;
-    long MILLIS = 5000;
+    private final long MILLIS = 1400;
+    private int currIndex;
 
     public Menu() {
+        currIndex = 0;
         initComponents();
         setOpaque(false);
         jScrollPane1.setVerticalScrollBar(new ScrollBarCustom(new Color(130, 130, 130, 100)));
@@ -31,9 +33,9 @@ public class Menu extends javax.swing.JPanel {
                                 b.setEnabled(false);
                             }
                         }
-                        sleep(MILLIS);
+                        lock.wait(MILLIS);
                         for (Component com : panelMenu.getComponents()) {
-                            if (com instanceof ButtonMenu b) {
+                            if (com instanceof ButtonMenu b && b.getIndex() != currIndex) {
                                 b.setEnabled(true);
                             }
                         }
@@ -46,22 +48,24 @@ public class Menu extends javax.swing.JPanel {
         menuThread.start();
     }
 
+
+
     public void initMenu(EventMenu event) {
         this.event = event;
-        addMenu(new ImageIcon(System.getProperty("user.dir") + "/src/main/java/com/nickmegistone/resources/voice.png"), "Voice Assistant", 0);
-        addMenu(new ImageIcon(System.getProperty("user.dir") + "/src/main/java/com/nickmegistone/resources/help.png"), "Hafta use", 1);
-        addMenu(new ImageIcon(System.getProperty("user.dir") + "/src/main/java/com/nickmegistone/resources/user.png"), "Creators", 2);
-        addMenu(new ImageIcon(System.getProperty("user.dir") + "/src/main/java/com/nickmegistone/resources/comingsoon.png"), "Coming soon", 3);
+        addMenu(0, new ImageIcon(System.getProperty("user.dir") + "/src/main/java/com/nickmegistone/resources/voice.png"), "Voice Assistant");
+        addMenu(1, new ImageIcon(System.getProperty("user.dir") + "/src/main/java/com/nickmegistone/resources/help.png"), "Hafta use");
+        addMenu(2, new ImageIcon(System.getProperty("user.dir") + "/src/main/java/com/nickmegistone/resources/user.png"), "Creators");
+        addMenu(3, new ImageIcon(System.getProperty("user.dir") + "/src/main/java/com/nickmegistone/resources/comingsoon.png"), "Coming soon");
         addEmpty();
-        addMenu(new ImageIcon(System.getProperty("user.dir") + "/src/main/java/com/nickmegistone/resources/copyleft.png"), "Licenses", 9);
+        addMenu(9, new ImageIcon(System.getProperty("user.dir") + "/src/main/java/com/nickmegistone/resources/copyleft.png"), "Licenses");
     }
 
     private void addEmpty() {
         panelMenu.add(new JLabel(), "push");
     }
 
-    private void addMenu(Icon icon, String text, int index) {
-        ButtonMenu menu = new ButtonMenu();
+    private void addMenu(int index, Icon icon, String text) {
+        ButtonMenu menu = new ButtonMenu(index);
         menu.setIcon(icon);
         menu.setText(" | " + text);
         menu.setFont(new Font("Segoe UI", Font.BOLD, 18));
@@ -69,21 +73,14 @@ public class Menu extends javax.swing.JPanel {
         menu.addActionListener(ae -> {
             event.selected(index);
             setSelected(menu);
-            setAllTemporarilyOff();
+            setAllTemporarilyOffExcept(index);
         });
     }
 
-    private void setAllTemporarilyOff() {
+    private void setAllTemporarilyOffExcept(int index) {
         synchronized (lock) {
+            currIndex = index;
             lock.notifyAll();
-        }
-    }
-
-    private void sleep(long millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
         }
     }
 

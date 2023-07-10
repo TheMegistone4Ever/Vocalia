@@ -1,5 +1,6 @@
 package com.nickmegistone.form;
 
+import com.nickmegistone.ai.GoogleTranslator;
 import com.nickmegistone.ai.MCNPLNN;
 import com.nickmegistone.ai.VoiceAssistant;
 import com.nickmegistone.swing.scrollbar.ScrollBarCustom;
@@ -12,13 +13,15 @@ public class InitForm extends javax.swing.JPanel {
 
     private VoiceAssistant va;
     private final MCNPLNN MCModel;
+    private final GoogleTranslator googleTranslator;
     private Thread recognitionThread;
-    private final Object lock; // Object to synchronize the threads
+    private final Object lock;
 
     public InitForm() {
         initComponents();
         lock = new Object();
         MCModel = new MCNPLNN("mctext.txt", 4);
+        googleTranslator = new GoogleTranslator("AKfycbxiVh8Fxy0opG1ygpNdNBaD9t_HC0nqk5IElpLLpgPMdpks_7E8hcH4N74065VJFohn");
         setOpaque(false);
         recognitionThread = new Thread(() -> {
             va = new VoiceAssistant("dict.dic", "language-model.lm");
@@ -126,7 +129,7 @@ public class InitForm extends javax.swing.JPanel {
         jLabel5.setRequestFocusEnabled(false);
 
         jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        jScrollPane2.setVerticalScrollBar(new ScrollBarCustom(new Color(130, 130, 130, 100)));
+        jScrollPane2.setVerticalScrollBar(new ScrollBarCustom(new Color(200, 200, 200, 50)));
 
         vocaliaAnswer.setEditable(false);
         vocaliaAnswer.setBackground(new java.awt.Color(25, 25, 25));
@@ -207,14 +210,13 @@ public class InitForm extends javax.swing.JPanel {
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
         System.out.println(evt);
         synchronized (lock) {
-            lock.notifyAll(); // Notify the recognition thread
+            lock.notifyAll();
         }
     }//GEN-LAST:event_jLabel3MouseClicked
 
     private void handleCommand(String searchQuery) {
-        int code = va.getCode(searchQuery);
         search.setText(searchQuery);
-        switch (code) {
+        switch (va.getCode(searchQuery)) {
             case 0 -> handlePlayMusicCommand();
             case 1 -> handleTellJokeCommand();
             case 2 -> handleWeatherForecastCommand();
@@ -238,6 +240,9 @@ public class InitForm extends javax.swing.JPanel {
     public void handleWeatherForecastCommand() {
         vocaliaAnswer.setText("Running Gismeteo weather services for forecasts...");
         va.cmdExec("start chrome https://www.gismeteo.com/");
+
+        // gismeteo api for forecasting weather using current GPS
+
     }
 
     public void handleSearchCommand(String searchQuery) {
@@ -246,8 +251,7 @@ public class InitForm extends javax.swing.JPanel {
     }
 
     public void handleTranslationCommand(String searchQuery) {
-        vocaliaAnswer.setText("Running DeepL translator to translate this information from English to Ukrainian...");
-        va.cmdExec("start chrome https://www.deepl.com/en/translator#en/uk/" + va.getSubstringAfter(searchQuery, "translate"));
+        vocaliaAnswer.setText(googleTranslator.translate("en", "uk", va.getSubstringAfter(searchQuery, "translate")));
     }
 
     public void handleGreetingsCommand() {
