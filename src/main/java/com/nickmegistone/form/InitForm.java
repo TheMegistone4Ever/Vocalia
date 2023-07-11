@@ -16,23 +16,23 @@ public class InitForm extends javax.swing.JPanel {
     private MCNPLNN MCModel;
     private GoogleTranslator googleTranslator;
     private OWMForecaster owmForecaster;
-    private Thread commandProcessingAndVoiceRecognitionThread;
+    private Thread voiceCommandThread;
     private final Object lock;
 
     public InitForm() {
         initComponents();
         lock = new Object();
         setOpaque(false);
-        commandProcessingAndVoiceRecognitionThread = new Thread(() -> {
+        voiceCommandThread = new Thread(() -> {
             va = new VoiceAssistant("dict.dic", "language-model.lm");
             jLabel3.setEnabled(true);
+            owmForecaster = new OWMForecaster("bcebc1ab15b0bf", "5a38a0988a6a37301a3b4963d6106fa2");
             va.startRecognizing();
             MCModel = new MCNPLNN("mctext.txt", 4);
             googleTranslator = new GoogleTranslator("AKfycbxiVh8Fxy0opG1ygpNdNBaD9t_HC0nqk5IElpLLpgPMdpks_7E8hcH4N74065VJFohn");
-            owmForecaster = new OWMForecaster("bcebc1ab15b0bf", "5a38a0988a6a37301a3b4963d6106fa2");
             synchronized (lock) {
                 try {
-                    while (!commandProcessingAndVoiceRecognitionThread.isInterrupted()) {
+                    while (!voiceCommandThread.isInterrupted()) {
                         lock.wait();
                         jLabel3.setEnabled(false);
                         handleCommand(va.getCommand());
@@ -43,7 +43,7 @@ public class InitForm extends javax.swing.JPanel {
                 }
             }
         });
-        commandProcessingAndVoiceRecognitionThread.start();
+        voiceCommandThread.start();
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -257,13 +257,13 @@ public class InitForm extends javax.swing.JPanel {
     }
 
     public void handleExitCommand() {
-        commandProcessingAndVoiceRecognitionThread.interrupt();
+        voiceCommandThread.interrupt();
         va.stopRecognizing();
         System.exit(0);
     }
 
     public void handleUnknownCommand(String searchQuery) {
-        vocaliaAnswer.setText(String.format("I don't understand you: %s ;(", searchQuery));
+        vocaliaAnswer.setText(String.format("I don't understand you: \"%s\" ;(", searchQuery));
         System.err.printf("Command not found: %s...%n", searchQuery);
         search.setEnabled(false);
         va.playMP3("farewell.mp3");

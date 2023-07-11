@@ -11,14 +11,32 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * This class represents a Google Translator that can translate text from one language to another.
+ *
+ * @author Mykyta Kyselov - <a href="https://github.com/TheMegistone4Ever">Github</a>
+ */
 public class GoogleTranslator {
 
     private final String deployId;
 
+    /**
+     * Constructs a GoogleTranslator object with the specified deploy ID.
+     *
+     * @param deployId The deploy ID for the Google Apps Script web application.
+     */
     public GoogleTranslator(String deployId) {
         this.deployId = deployId;
     }
 
+    /**
+     * Translates the given text from the source language to the target language.
+     *
+     * @param langFrom The source language code.
+     * @param langTo   The target language code.
+     * @param text     The text to be translated.
+     * @return         The translated text.
+     */
     public @NotNull String translate(String langFrom, String langTo, String text) {
         StringBuilder response = new StringBuilder();
         try {

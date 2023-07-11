@@ -27,7 +27,8 @@ public class Vocalia extends javax.swing.JFrame {
                 showForm(new Form(index));
             }
         });
-        showForm(new InitForm());
+        showForm(initForm);
+        menu1.setAllTemporarilyOffExcept(0);
     }
 
     private void showForm(Component com) {

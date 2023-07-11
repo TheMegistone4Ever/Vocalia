@@ -37,7 +37,7 @@ public class MCNPLNN {
             String currState = String.join(" ", clearText.subList(i, i + nGram));
             String nextState = String.join(" ", clearText.subList(i + nGram, i + (nGram << 1)));
             MCModel.putIfAbsent(currState, new HashMap<>());
-            MCModel.get(currState).put(nextState, MCModel.get(currState).getOrDefault(nextState, 0.0) + 1);
+            MCModel.get(currState).put(nextState, MCModel.get(currState).getOrDefault(nextState, .0) + 1);
         }
         // Relative frequency
         for (Map.Entry<String, Map<String, Double>> entry : MCModel.entrySet()) {

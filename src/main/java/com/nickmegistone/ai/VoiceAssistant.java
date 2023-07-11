@@ -48,7 +48,7 @@ public final class VoiceAssistant {
      *
      * @return The command extracted from the voice recognition result, converted to lowercase.
      */
-    public String getCommand() {
+    public @NotNull String getCommand() {
         return lsr.getResult().getHypothesis().toLowerCase();
     }
 

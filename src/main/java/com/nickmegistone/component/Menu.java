@@ -14,10 +14,10 @@ public class Menu extends javax.swing.JPanel {
     private final Object lock;
     private Thread menuThread;
     private final long MILLIS = 1400;
-    private int currIndex;
+    private int index;
 
     public Menu() {
-        currIndex = 0;
+        index = 0;
         initComponents();
         setOpaque(false);
         jScrollPane1.setVerticalScrollBar(new ScrollBarCustom(new Color(130, 130, 130, 100)));
@@ -35,7 +35,7 @@ public class Menu extends javax.swing.JPanel {
                         }
                         lock.wait(MILLIS);
                         for (Component com : panelMenu.getComponents()) {
-                            if (com instanceof ButtonMenu b && b.getIndex() != currIndex) {
+                            if (com instanceof ButtonMenu b && b.getIndex() != index) {
                                 b.setEnabled(true);
                             }
                         }
@@ -47,8 +47,6 @@ public class Menu extends javax.swing.JPanel {
         });
         menuThread.start();
     }
-
-
 
     public void initMenu(EventMenu event) {
         this.event = event;
@@ -77,9 +75,9 @@ public class Menu extends javax.swing.JPanel {
         });
     }
 
-    private void setAllTemporarilyOffExcept(int index) {
+    public void setAllTemporarilyOffExcept(int index) {
         synchronized (lock) {
-            currIndex = index;
+            this.index = index;
             lock.notifyAll();
         }
     }
