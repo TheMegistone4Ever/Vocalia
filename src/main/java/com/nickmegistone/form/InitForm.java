@@ -1,9 +1,6 @@
 package com.nickmegistone.form;
 
-import com.nickmegistone.ai.GoogleTranslator;
-import com.nickmegistone.ai.MCNPLNN;
-import com.nickmegistone.ai.OWMForecaster;
-import com.nickmegistone.ai.VoiceAssistant;
+import com.nickmegistone.ai.*;
 import com.nickmegistone.swing.scrollbar.ScrollBarCustom;
 
 import javax.swing.*;
@@ -17,16 +14,19 @@ public class InitForm extends javax.swing.JPanel {
     private GoogleTranslator googleTranslator;
     private OWMForecaster owmForecaster;
     private Thread voiceCommandThread;
+    private Thread synthesizerThread;
     private final Object lock;
+    private final Object lockSynthesizer;
 
     public InitForm() {
         initComponents();
         lock = new Object();
+        lockSynthesizer = new Object();
         setOpaque(false);
         voiceCommandThread = new Thread(() -> {
+            owmForecaster = new OWMForecaster("bcebc1ab15b0bf", "5a38a0988a6a37301a3b4963d6106fa2");
             va = new VoiceAssistant("dict.dic", "language-model.lm");
             jLabel3.setEnabled(true);
-            owmForecaster = new OWMForecaster("bcebc1ab15b0bf", "5a38a0988a6a37301a3b4963d6106fa2");
             va.startRecognizing();
             MCModel = new MCNPLNN("mctext.txt", 4);
             googleTranslator = new GoogleTranslator("AKfycbxiVh8Fxy0opG1ygpNdNBaD9t_HC0nqk5IElpLLpgPMdpks_7E8hcH4N74065VJFohn");
@@ -44,6 +44,19 @@ public class InitForm extends javax.swing.JPanel {
             }
         });
         voiceCommandThread.start();
+        synthesizerThread = new Thread(() -> {
+            synchronized (lockSynthesizer) {
+                try (Synthesizer synthesizer = Synthesizer.getInstance()) {
+                    while (!synthesizerThread.isInterrupted()) {
+                        lockSynthesizer.wait();
+                        synthesizer.speak(vocaliaAnswer.getText());
+                    }
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        synthesizerThread.start();
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -226,6 +239,9 @@ public class InitForm extends javax.swing.JPanel {
             case 5 -> handleGreetingsCommand();
             case 6 -> handleExitCommand();
             default -> handleUnknownCommand(searchQuery);
+        }
+        synchronized (lockSynthesizer) {
+            lockSynthesizer.notifyAll();
         }
     }
 

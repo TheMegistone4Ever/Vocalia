@@ -12,7 +12,8 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 /**
- * This class represents a Google Translator that can translate text from one language to another.
+ * The GoogleTranslator class represents a translator that can translate text from one language to another using
+ * Google Apps Script. It utilizes the Google Apps Script web application deployed with a specific deploy ID.
  *
  * @author Mykyta Kyselov - <a href="https://github.com/TheMegistone4Ever">Github</a>
  */

@@ -13,6 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.URL;
+import java.util.Locale;
 
 /**
  * This class represents an OWMForecaster that retrieves weather forecast information from the OpenWeatherMap API.
@@ -64,13 +65,15 @@ public class OWMForecaster {
             JSONObject cityObj = json.getJSONObject("city");
             forecast = String.format(
                     "Good evening, folks! It's time for your weather update. In the beautiful town of %s, located " +
-                            "in %s at coordinates %,.1f latitude and %,.1f longitude, we're experiencing next conditions. " +
-                            "Currently, the temperature is %,.2f degrees Celsius, with a feels-like temperature of " +
-                            "%,.2f degrees Celsius. We're expecting a maximum temperature of %,.2f degrees Celsius " +
-                            "and a minimum temperature of %,.2f degrees Celsius. The atmospheric pressure stands at " +
-                            "%d millibars, and the humidity is %d%%. As for the skies, %s. The wind is blowing at a speed of %,.2f meters per second. That's all for now from your weather team. Stay tuned for more updates!",
+                            "in %s at coordinates %,.1f latitude and %,.1f longitude, we're experiencing next " +
+                            "conditions. Currently, the temperature is %,.1f degrees Celsius, with a feels-like " +
+                            "temperature of %,.1f degrees Celsius. We're expecting a maximum temperature of %,.1f " +
+                            "degrees Celsius and a minimum temperature of %,.1f degrees Celsius. The atmospheric " +
+                            "pressure stands at %d millibars, and the humidity is %d%%. As for the skies, %s. The " +
+                            "wind is blowing at a speed of %,.1f meters per second. That's all for now from your " +
+                            "weather team. Stay tuned for more updates!",
                     cityObj.getString("name"),
-                    cityObj.getString("country"),
+                    new Locale.Builder().setRegion(cityObj.getString("country")).build().getDisplayCountry(Locale.ENGLISH),
                     Double.parseDouble(response.getLatitude()),
                     Double.parseDouble(response.getLongitude()),
                     mainObj.getDouble("temp"),
