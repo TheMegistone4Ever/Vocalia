@@ -17,11 +17,13 @@ public class InitForm extends javax.swing.JPanel {
     private Thread synthesizerThread;
     private final Object lock;
     private final Object lockSynthesizer;
+    private boolean synthesizerIsSpeaking;
 
     public InitForm() {
         initComponents();
         lock = new Object();
         lockSynthesizer = new Object();
+        synthesizerIsSpeaking = false;
         setOpaque(false);
         voiceCommandThread = new Thread(() -> {
             owmForecaster = new OWMForecaster("bcebc1ab15b0bf", "5a38a0988a6a37301a3b4963d6106fa2");
@@ -44,12 +46,15 @@ public class InitForm extends javax.swing.JPanel {
             }
         });
         voiceCommandThread.start();
+
         synthesizerThread = new Thread(() -> {
             synchronized (lockSynthesizer) {
                 try (Synthesizer synthesizer = Synthesizer.getInstance()) {
                     while (!synthesizerThread.isInterrupted()) {
                         lockSynthesizer.wait();
+                        synthesizerIsSpeaking = true;
                         synthesizer.speak(vocaliaAnswer.getText());
+                        synthesizerIsSpeaking = false;
                     }
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
@@ -200,8 +205,9 @@ public class InitForm extends javax.swing.JPanel {
 
     private void searchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchMouseClicked
         System.out.println(evt);
-        search.setEnabled(true);
-        search.setText("");
+        search.setEnabled(!synthesizerIsSpeaking);
+        search.setText(synthesizerIsSpeaking ? "Synthesizer is speaking..." : "");
+        search.setDisabledTextColor(synthesizerIsSpeaking ? new java.awt.Color(255, 102, 0) : new java.awt.Color(0, 102, 102));
     }//GEN-LAST:event_searchMouseClicked
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
@@ -211,9 +217,12 @@ public class InitForm extends javax.swing.JPanel {
 
     private void searchKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchKeyPressed
         System.out.println(evt);
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+        if (synthesizerIsSpeaking) {
+            search.setText("Synthesizer is speaking...");
+        } else if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             handleCommand(search.getText());
         }
+        search.setDisabledTextColor(synthesizerIsSpeaking ? new java.awt.Color(255, 102, 0) : new java.awt.Color(0, 102, 102));
     }//GEN-LAST:event_searchKeyPressed
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
@@ -268,8 +277,7 @@ public class InitForm extends javax.swing.JPanel {
     }
 
     public void handleGreetingsCommand() {
-        vocaliaAnswer.setText("Hello =)");
-        va.startRecognizing();
+        vocaliaAnswer.setText("Hello world! ;)");
     }
 
     public void handleExitCommand() {

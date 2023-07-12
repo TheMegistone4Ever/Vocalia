@@ -76,7 +76,7 @@ public class MCNPLNN {
                 .replaceFirst(" it", ", it")
                 .replaceFirst(" because", "? - because")
                 .replaceFirst(" youre", ", you're")
-                .replaceFirst(" haha", " - =) ha-ha ;),");
+                .replaceFirst(" haha", " - :) ha-ha ;),");
     }
 
     /**
