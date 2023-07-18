@@ -14,7 +14,7 @@ import java.io.IOException;
  * The extension allows starting and stopping the recognition process.
  * With help: <a href="http://stackoverflow.com/questions/29121188/cant-access-microphone-while-running-dialog-demo-in-sphinx4-5prealpha#comment46488376_29121188">Nickolay</a>
  *
- * @author Mykyta Kyselov - <a href="https://github.com/TheMegistone4Ever">Github</a>
+ * @author Mykyta Kyselov & Sphinx - <a href="https://github.com/TheMegistone4Ever">Github</a>
  */
 public class LiveSpeechRecognizerExtension extends AbstractSpeechRecognizerExtension {
 

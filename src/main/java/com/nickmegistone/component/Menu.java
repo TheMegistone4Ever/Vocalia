@@ -1,5 +1,6 @@
 package com.nickmegistone.component;
 
+import com.nickmegistone.appconstants.AppConstants;
 import com.nickmegistone.event.EventMenu;
 import com.nickmegistone.swing.ButtonMenu;
 import com.nickmegistone.swing.scrollbar.ScrollBarCustom;
@@ -11,29 +12,25 @@ import java.awt.*;
 public class Menu extends javax.swing.JPanel {
 
     private EventMenu event;
-    private final Object lock;
-    private Thread menuThread;
-    private final long MILLIS = 1400;
-    private int index;
+    private final Object lock = new Object();
+    private int index = 0;
 
     public Menu() {
-        index = 0;
         initComponents();
         setOpaque(false);
-        jScrollPane1.setVerticalScrollBar(new ScrollBarCustom(new Color(130, 130, 130, 100)));
+        jScrollPane1.setVerticalScrollBar(new ScrollBarCustom(AppConstants.SCROLLBAR_COLOR));
         panelMenu.setLayout(new MigLayout("wrap, fillx, inset 3", "[fill]", "[]0[]"));
-        lock = new Object();
-        menuThread = new Thread(() -> {
+        Thread menuThread = new Thread(() -> {
             synchronized (lock) {
                 try {
-                    while (!menuThread.isInterrupted()) {
+                    while (true) {
                         lock.wait();
                         for (Component com : panelMenu.getComponents()) {
                             if (com instanceof ButtonMenu b) {
                                 b.setEnabled(false);
                             }
                         }
-                        lock.wait(MILLIS);
+                        lock.wait(AppConstants.MENU_SLEEP_MILLIS);
                         for (Component com : panelMenu.getComponents()) {
                             if (com instanceof ButtonMenu b && b.getIndex() != index) {
                                 b.setEnabled(true);
@@ -102,14 +99,14 @@ public class Menu extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         panelMenu = new javax.swing.JPanel();
 
-        roundPanel1.setBackground(new java.awt.Color(51, 51, 51));
+        roundPanel1.setBackground(AppConstants.MAIN_BACKGROUND_COLOR);
 
-        imageAvatar1.setForeground(new java.awt.Color(231, 231, 231));
+        imageAvatar1.setForeground(AppConstants.AVATAR_BORDER_TEXT_COLOR);
         imageAvatar1.setBorderSize(2);
         imageAvatar1.setIcon(new ImageIcon(System.getProperty("user.dir") + "/src/main/java/com/nickmegistone/resources/logo.png"));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Black", Font.BOLD, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(224, 224, 224));
+        jLabel1.setForeground(AppConstants.AVATAR_BORDER_TEXT_COLOR);
         jLabel1.setText("Vocalia");
 
         javax.swing.GroupLayout roundPanel1Layout = new javax.swing.GroupLayout(roundPanel1);
@@ -133,12 +130,12 @@ public class Menu extends javax.swing.JPanel {
                 .addGap(10, 10, 10))
         );
 
-        roundPanel2.setBackground(new java.awt.Color(51, 51, 51));
+        roundPanel2.setBackground(AppConstants.MAIN_BACKGROUND_COLOR);
 
         jScrollPane1.setBorder(null);
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        panelMenu.setBackground(new java.awt.Color(51, 51, 51));
+        panelMenu.setBackground(AppConstants.MAIN_BACKGROUND_COLOR);
 
         javax.swing.GroupLayout panelMenuLayout = new javax.swing.GroupLayout(panelMenu);
         panelMenu.setLayout(panelMenuLayout);
@@ -171,7 +168,7 @@ public class Menu extends javax.swing.JPanel {
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
+        setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(roundPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)

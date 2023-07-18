@@ -21,6 +21,7 @@ import java.io.IOException;
 public final class VoiceAssistant {
 
     private final LiveSpeechRecognizerExtension lsr;
+    private boolean isRecognizing = false;
 
     /**
      * Constructs a VoiceAssistant object with the specified parameters.
@@ -82,6 +83,7 @@ public final class VoiceAssistant {
      */
     public void startRecognizing() {
         lsr.startRecognition();
+        isRecognizing = true;
         playMP3("greetings.mp3");
     }
 
@@ -89,21 +91,11 @@ public final class VoiceAssistant {
      * Stops the speech recognition process.
      */
     public void stopRecognizing() {
-        lsr.stopRecognition();
-        playMP3("farewell.mp3");
-    }
-
-    /**
-     * Executes a command in the command prompt.
-     *
-     * @param command A string representing the command to be executed.
-     */
-    public void cmdExec(String command) {
-        try {
-            Runtime.getRuntime().exec(new String[]{"cmd", "/c", command});
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if (isRecognizing) {
+            lsr.stopRecognition();
+            isRecognizing = false;
         }
+        playMP3("farewell.mp3");
     }
 
     /**

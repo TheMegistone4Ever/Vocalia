@@ -1,11 +1,15 @@
 package com.nickmegistone.form;
 
 import com.nickmegistone.ai.*;
+import com.nickmegistone.appconstants.AppConstants;
 import com.nickmegistone.swing.scrollbar.ScrollBarCustom;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.net.*;
+import java.util.function.Supplier;
 
 public class InitForm extends javax.swing.JPanel {
 
@@ -13,28 +17,56 @@ public class InitForm extends javax.swing.JPanel {
     private MCNPLNN MCModel;
     private GoogleTranslator googleTranslator;
     private OWMForecaster owmForecaster;
-    private Thread voiceCommandThread;
-    private Thread synthesizerThread;
-    private final Object lock;
-    private final Object lockSynthesizer;
-    private boolean synthesizerIsSpeaking;
+    private final Object lock = new Object();
+    private final Object lockSynthesizer = new Object();
+    private final Object lockConnection = new Object();
+    private final Thread voiceCommandThread;
+    private final Thread synthesizerThread;
+    Supplier<Boolean> isNetUnavailable = () -> {
+        try (Socket socket = new Socket()) {
+            socket.connect(new InetSocketAddress("google.com", 80), AppConstants.INTERNET_TIMEOUT);
+            return false;
+        } catch (IOException e) {
+            return true;
+        }
+    };
+    private final Thread retryConnectionThread = new Thread(() -> {
+        try {
+            synchronized (lockConnection) {
+                while (true) {
+                    lockConnection.wait();
+                    while (isNetUnavailable.get()) {
+                        signalSearch(AppConstants.NO_INTERNET_CONNECTION_SEARCH, false);
+                        synchronized (InitForm.class) {
+                            InitForm.class.wait(AppConstants.INTERNET_TIMEOUT);
+                        }
+                    }
+                }
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    });
+    private boolean synthesizerIsSpeaking = false;
 
     public InitForm() {
         initComponents();
-        lock = new Object();
-        lockSynthesizer = new Object();
-        synthesizerIsSpeaking = false;
         setOpaque(false);
+        search.setText(AppConstants.SEND);
+        retryConnectionThread.start();
         voiceCommandThread = new Thread(() -> {
+            synchronized (lockConnection) {
+                lockConnection.notifyAll();
+            }
             owmForecaster = new OWMForecaster("bcebc1ab15b0bf", "5a38a0988a6a37301a3b4963d6106fa2");
-            va = new VoiceAssistant("dict.dic", "language-model.lm");
-            jLabel3.setEnabled(true);
-            va.startRecognizing();
-            MCModel = new MCNPLNN("mctext.txt", 4);
             googleTranslator = new GoogleTranslator("AKfycbxiVh8Fxy0opG1ygpNdNBaD9t_HC0nqk5IElpLLpgPMdpks_7E8hcH4N74065VJFohn");
+            va = new VoiceAssistant("dict.dic", "language-model.lm");
+            va.startRecognizing();
+            jLabel3.setEnabled(true);
+            MCModel = new MCNPLNN("mctext.txt", 4);
             synchronized (lock) {
                 try {
-                    while (!voiceCommandThread.isInterrupted()) {
+                    while (true) {
                         lock.wait();
                         jLabel3.setEnabled(false);
                         handleCommand(va.getCommand());
@@ -46,15 +78,17 @@ public class InitForm extends javax.swing.JPanel {
             }
         });
         voiceCommandThread.start();
-
         synthesizerThread = new Thread(() -> {
             synchronized (lockSynthesizer) {
                 try (Synthesizer synthesizer = Synthesizer.getInstance()) {
-                    while (!synthesizerThread.isInterrupted()) {
+                    while (true) {
                         lockSynthesizer.wait();
                         synthesizerIsSpeaking = true;
                         synthesizer.speak(vocaliaAnswer.getText());
                         synthesizerIsSpeaking = false;
+                        if (search.getText().equals(AppConstants.SYNTHESIZER_IS_SPEAKING)) {
+                            signalSearch(AppConstants.SEND, true);
+                        }
                     }
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
@@ -164,7 +198,7 @@ public class InitForm extends javax.swing.JPanel {
         jScrollPane2.setViewportView(vocaliaAnswer);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
+        setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -205,9 +239,14 @@ public class InitForm extends javax.swing.JPanel {
 
     private void searchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchMouseClicked
         System.out.println(evt);
-        search.setEnabled(!synthesizerIsSpeaking);
-        search.setText(synthesizerIsSpeaking ? "Synthesizer is speaking..." : "");
-        search.setDisabledTextColor(synthesizerIsSpeaking ? new java.awt.Color(255, 102, 0) : new java.awt.Color(0, 102, 102));
+        synchronized (lockConnection) {
+            lockConnection.notifyAll();
+        }
+        if (synthesizerIsSpeaking) {
+            signalSearch(AppConstants.SYNTHESIZER_IS_SPEAKING, false);
+        } else {
+            signalSearch(AppConstants.SEARCH_WHEN_CLICKED, true);
+        }
     }//GEN-LAST:event_searchMouseClicked
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
@@ -217,25 +256,50 @@ public class InitForm extends javax.swing.JPanel {
 
     private void searchKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchKeyPressed
         System.out.println(evt);
-        if (synthesizerIsSpeaking) {
-            search.setText("Synthesizer is speaking...");
-        } else if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            handleCommand(search.getText());
+        // Optimised key pressing method - check for network only when <ENTER> is pressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            synchronized (lockConnection) {
+                lockConnection.notifyAll();
+            }
+            if (synthesizerIsSpeaking) {
+                signalSearch(AppConstants.SYNTHESIZER_IS_SPEAKING, false);
+            } else {
+                handleCommand(search.getText());
+            }
         }
-        search.setDisabledTextColor(synthesizerIsSpeaking ? new java.awt.Color(255, 102, 0) : new java.awt.Color(0, 102, 102));
     }//GEN-LAST:event_searchKeyPressed
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
         System.out.println(evt);
-        handleCommand(search.getText());
+        synchronized (lockConnection) {
+            lockConnection.notifyAll();
+        }
+        if (synthesizerIsSpeaking) {
+            signalSearch(AppConstants.SYNTHESIZER_IS_SPEAKING, false);
+        } else {
+            handleCommand(search.getText());
+        }
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
         System.out.println(evt);
-        synchronized (lock) {
-            lock.notifyAll();
+        synchronized (lockConnection) {
+            lockConnection.notifyAll();
+        }
+        if (synthesizerIsSpeaking) {
+            signalSearch(AppConstants.SYNTHESIZER_IS_SPEAKING, false);
+        } else {
+            synchronized (lock) {
+                lock.notifyAll();
+            }
         }
     }//GEN-LAST:event_jLabel3MouseClicked
+
+    private void signalSearch(String text, boolean isEnabled) {
+        search.setEnabled(isEnabled);
+        search.setText(text);
+        search.setDisabledTextColor(isEnabled ? AppConstants.SEARCH_ENABLED_COLOR : AppConstants.SEARCH_DISABLED_COLOR);
+    }
 
     private void handleCommand(String searchQuery) {
         search.setText(searchQuery);
@@ -256,7 +320,7 @@ public class InitForm extends javax.swing.JPanel {
 
     public void handlePlayMusicCommand() {
         vocaliaAnswer.setText("Right now your loudspeakers are playing wonderful songs via Youtube Music, enjoy it ;)");
-        va.cmdExec("start chrome https://music.youtube.com/watch?list=RDAMVMljUtuoFt-8c");
+        cmdExec("start chrome https://music.youtube.com/watch?list=RDAMVMljUtuoFt-8c");
     }
 
     public void handleTellJokeCommand() {
@@ -269,7 +333,7 @@ public class InitForm extends javax.swing.JPanel {
 
     public void handleSearchCommand(String searchQuery) {
         vocaliaAnswer.setText("Running the Google browser to search for this information...");
-        va.cmdExec("start chrome https://www.google.com/search?q=" + va.getSubstringAfter(searchQuery, "search for"));
+        cmdExec("start chrome https://www.google.com/search?q=" + va.getSubstringAfter(searchQuery, "search for"));
     }
 
     public void handleTranslationCommand(String searchQuery) {
@@ -281,9 +345,16 @@ public class InitForm extends javax.swing.JPanel {
     }
 
     public void handleExitCommand() {
-        voiceCommandThread.interrupt();
-        va.stopRecognizing();
-        System.exit(0);
+        try {
+            retryConnectionThread.interrupt();
+            voiceCommandThread.interrupt();
+            synthesizerThread.interrupt();
+            va.stopRecognizing();
+            System.exit(0);
+        } catch (NullPointerException | IllegalStateException e) {
+            System.err.println(e.getMessage());
+            System.exit(0);
+        }
     }
 
     public void handleUnknownCommand(String searchQuery) {
@@ -291,6 +362,19 @@ public class InitForm extends javax.swing.JPanel {
         System.err.printf("Command not found: %s...%n", searchQuery);
         search.setEnabled(false);
         va.playMP3("farewell.mp3");
+    }
+
+    /**
+     * Executes a command in the command prompt.
+     *
+     * @param command A string representing the command to be executed.
+     */
+    public void cmdExec(String command) {
+        try {
+            Runtime.getRuntime().exec(new String[]{"cmd", "/c", command});
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

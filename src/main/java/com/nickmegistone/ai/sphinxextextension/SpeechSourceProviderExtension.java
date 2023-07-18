@@ -6,7 +6,7 @@ import edu.cmu.sphinx.api.Microphone;
  * This class represents an extension for providing speech sources using the Sphinx speech recognition library.
  * It includes functionality for accessing a microphone as a speech source.
  *
- * @author Mykyta Kyselov - <a href="https://github.com/TheMegistone4Ever">Github</a>
+ * @author Mykyta Kyselov & Sphinx - <a href="https://github.com/TheMegistone4Ever">Github</a>
  */
 public class SpeechSourceProviderExtension {
 

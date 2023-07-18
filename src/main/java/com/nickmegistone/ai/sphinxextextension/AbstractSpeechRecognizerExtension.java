@@ -17,7 +17,7 @@ import java.io.IOException;
  * It also utilizes a {@link SpeechSourceProviderExtension} to obtain the speech source.
  * Subclasses can extend this abstract class to implement specific speech recognition functionalities.
  *
- * @author Mykyta Kyselov - <a href="https://github.com/TheMegistone4Ever">Github</a>
+ * @author Mykyta Kyselov & Sphinx - <a href="https://github.com/TheMegistone4Ever">Github</a>
  */
 public class AbstractSpeechRecognizerExtension {
 

@@ -1,5 +1,6 @@
 package com.nickmegistone.vocaliamaven;
 
+import com.nickmegistone.appconstants.AppConstants;
 import com.nickmegistone.form.Form;
 import com.nickmegistone.form.InitForm;
 import javazoom.jl.decoder.JavaLayerException;
@@ -18,7 +19,7 @@ public class Vocalia extends javax.swing.JFrame {
     
     public Vocalia() throws IOException, JavaLayerException {
         initComponents();
-        setBackground(new Color(0, 0, 0, 0));
+        setBackground(AppConstants.MAIN_BACKGROUND_COLOR);
         initForm = new InitForm();
         menu1.initMenu(index -> {
             if (index == 0) {
@@ -50,8 +51,8 @@ public class Vocalia extends javax.swing.JFrame {
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setUndecorated(true);
 
-        roundPanel1.setBackground(new java.awt.Color(102, 102, 102));
-        roundPanel1.setPreferredSize(new java.awt.Dimension(1280, 720));
+        roundPanel1.setBackground(AppConstants.LIGHT_BACKGROUND_COLOR);
+        roundPanel1.setPreferredSize(new java.awt.Dimension(AppConstants.WIDTH, AppConstants.HEIGHT));
         roundPanel1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 roundPanel1MouseDragged(evt);
@@ -69,7 +70,7 @@ public class Vocalia extends javax.swing.JFrame {
         menu1.setMinimumSize(new java.awt.Dimension(0, 0));
         menu1.setPreferredSize(new java.awt.Dimension(256, 680));
 
-        body.setBackground(new java.awt.Color(25, 25, 25));
+        body.setBackground(AppConstants.DARK_BACKGROUND_COLOR);
         body.setPreferredSize(new java.awt.Dimension(998, 680));
         body.setLayout(new java.awt.BorderLayout());
 
@@ -128,11 +129,11 @@ public class Vocalia extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        System.exit(0);
+        initForm.handleExitCommand();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void roundPanel1MouseDragged(@NotNull MouseEvent evt) {//GEN-FIRST:event_roundPanel1MouseDragged
-        this.setLocation(evt.getXOnScreen() - mouseX, evt.getYOnScreen() - mouseY);
+        setLocation(evt.getXOnScreen() - mouseX, evt.getYOnScreen() - mouseY);
     }//GEN-LAST:event_roundPanel1MouseDragged
 
     private void roundPanel1MousePressed(@NotNull MouseEvent evt) {//GEN-FIRST:event_roundPanel1MousePressed
