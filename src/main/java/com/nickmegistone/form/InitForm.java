@@ -17,7 +17,7 @@ public class InitForm extends javax.swing.JPanel {
     private MCNPLNN MCModel;
     private GoogleTranslator googleTranslator;
     private OWMForecaster owmForecaster;
-    private final Object lock = new Object();
+    private final Object lockVoiceCommand = new Object();
     private final Object lockSynthesizer = new Object();
     private final Object lockConnection = new Object();
     private final Thread voiceCommandThread;
@@ -37,9 +37,7 @@ public class InitForm extends javax.swing.JPanel {
                     lockConnection.wait();
                     while (isNetUnavailable.get()) {
                         signalSearch(AppConstants.NO_INTERNET_CONNECTION_SEARCH, false);
-                        synchronized (InitForm.class) {
-                            InitForm.class.wait(AppConstants.INTERNET_TIMEOUT);
-                        }
+                        lockConnection.wait(AppConstants.INTERNET_TIMEOUT);
                     }
                 }
             }
@@ -58,23 +56,28 @@ public class InitForm extends javax.swing.JPanel {
             synchronized (lockConnection) {
                 lockConnection.notifyAll();
             }
-            owmForecaster = new OWMForecaster("bcebc1ab15b0bf", "5a38a0988a6a37301a3b4963d6106fa2");
-            googleTranslator = new GoogleTranslator("AKfycbxiVh8Fxy0opG1ygpNdNBaD9t_HC0nqk5IElpLLpgPMdpks_7E8hcH4N74065VJFohn");
-            va = new VoiceAssistant("dict.dic", "language-model.lm");
-            va.startRecognizing();
-            jLabel3.setEnabled(true);
-            MCModel = new MCNPLNN("mctext.txt", 4);
-            synchronized (lock) {
-                try {
+            try {
+                synchronized (lockConnection) {
+                    while (isNetUnavailable.get()) {
+                        lockConnection.wait(AppConstants.INTERNET_TIMEOUT);
+                    }
+                }
+                owmForecaster = new OWMForecaster("bcebc1ab15b0bf", "5a38a0988a6a37301a3b4963d6106fa2");
+                googleTranslator = new GoogleTranslator("AKfycbxiVh8Fxy0opG1ygpNdNBaD9t_HC0nqk5IElpLLpgPMdpks_7E8hcH4N74065VJFohn");
+                va = new VoiceAssistant("dict.dic", "language-model.lm");
+                va.startRecognizing();
+                jLabel3.setEnabled(true);
+                MCModel = new MCNPLNN("mctext.txt", 4);
+                synchronized (lockVoiceCommand) {
                     while (true) {
-                        lock.wait();
+                        lockVoiceCommand.wait();
                         jLabel3.setEnabled(false);
                         handleCommand(va.getCommand());
                         jLabel3.setEnabled(true);
                     }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         });
         voiceCommandThread.start();
@@ -289,8 +292,8 @@ public class InitForm extends javax.swing.JPanel {
         if (synthesizerIsSpeaking) {
             signalSearch(AppConstants.SYNTHESIZER_IS_SPEAKING, false);
         } else {
-            synchronized (lock) {
-                lock.notifyAll();
+            synchronized (lockVoiceCommand) {
+                lockVoiceCommand.notifyAll();
             }
         }
     }//GEN-LAST:event_jLabel3MouseClicked

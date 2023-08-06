@@ -12,7 +12,6 @@ import java.awt.*;
 public class Menu extends javax.swing.JPanel {
 
     private EventMenu event;
-    private final Object lock = new Object();
     private int index = 0;
 
     public Menu() {
@@ -20,17 +19,17 @@ public class Menu extends javax.swing.JPanel {
         setOpaque(false);
         jScrollPane1.setVerticalScrollBar(new ScrollBarCustom(AppConstants.SCROLLBAR_COLOR));
         panelMenu.setLayout(new MigLayout("wrap, fillx, inset 3", "[fill]", "[]0[]"));
-        Thread menuThread = new Thread(() -> {
-            synchronized (lock) {
+        new Thread(() -> {
+            synchronized (this) {
                 try {
-                    while (true) {
-                        lock.wait();
+                    while (!Thread.currentThread().isInterrupted()) {
+                        wait();
                         for (Component com : panelMenu.getComponents()) {
                             if (com instanceof ButtonMenu b) {
                                 b.setEnabled(false);
                             }
                         }
-                        lock.wait(AppConstants.MENU_SLEEP_MILLIS);
+                        wait(AppConstants.MENU_SLEEP_MILLIS);
                         for (Component com : panelMenu.getComponents()) {
                             if (com instanceof ButtonMenu b && b.getIndex() != index) {
                                 b.setEnabled(true);
@@ -41,8 +40,7 @@ public class Menu extends javax.swing.JPanel {
                     throw new RuntimeException(e);
                 }
             }
-        });
-        menuThread.start();
+        }).start();
     }
 
     public void initMenu(EventMenu event) {
@@ -72,11 +70,9 @@ public class Menu extends javax.swing.JPanel {
         });
     }
 
-    public void setAllTemporarilyOffExcept(int index) {
-        synchronized (lock) {
-            this.index = index;
-            lock.notifyAll();
-        }
+    public synchronized void setAllTemporarilyOffExcept(int index) {
+        this.index = index;
+        notifyAll();
     }
 
     private void setSelected(ButtonMenu menu) {
