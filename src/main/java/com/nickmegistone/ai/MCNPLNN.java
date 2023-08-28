@@ -97,7 +97,7 @@ public class MCNPLNN {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return cleanedWords;
     }

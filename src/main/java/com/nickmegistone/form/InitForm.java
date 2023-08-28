@@ -1,7 +1,7 @@
 package com.nickmegistone.form;
 
 import com.nickmegistone.ai.*;
-import com.nickmegistone.appconstants.AppConstants;
+import com.nickmegistone.apputils.AppUtils;
 import com.nickmegistone.swing.scrollbar.ScrollBarCustom;
 
 import javax.swing.*;
@@ -22,9 +22,9 @@ public class InitForm extends javax.swing.JPanel {
     private final Object lockConnection = new Object();
     private final Thread voiceCommandThread;
     private final Thread synthesizerThread;
-    Supplier<Boolean> isNetUnavailable = () -> {
+    private final Supplier<Boolean> isNetUnavailable = () -> {
         try (Socket socket = new Socket()) {
-            socket.connect(new InetSocketAddress("google.com", 80), AppConstants.INTERNET_TIMEOUT);
+            socket.connect(new InetSocketAddress("google.com", 80), AppUtils.INTERNET_TIMEOUT);
             return false;
         } catch (IOException e) {
             return true;
@@ -36,8 +36,8 @@ public class InitForm extends javax.swing.JPanel {
                 while (true) {
                     lockConnection.wait();
                     while (isNetUnavailable.get()) {
-                        signalSearch(AppConstants.NO_INTERNET_CONNECTION_SEARCH, false);
-                        lockConnection.wait(AppConstants.INTERNET_TIMEOUT);
+                        signalSearch(AppUtils.NO_INTERNET_CONNECTION_SEARCH, false);
+                        lockConnection.wait(AppUtils.INTERNET_TIMEOUT);
                     }
                 }
             }
@@ -50,7 +50,7 @@ public class InitForm extends javax.swing.JPanel {
     public InitForm() {
         initComponents();
         setOpaque(false);
-        search.setText(AppConstants.SEND);
+        search.setText(AppUtils.SEND);
         retryConnectionThread.start();
         voiceCommandThread = new Thread(() -> {
             synchronized (lockConnection) {
@@ -59,7 +59,7 @@ public class InitForm extends javax.swing.JPanel {
             try {
                 synchronized (lockConnection) {
                     while (isNetUnavailable.get()) {
-                        lockConnection.wait(AppConstants.INTERNET_TIMEOUT);
+                        lockConnection.wait(AppUtils.INTERNET_TIMEOUT);
                     }
                 }
                 owmForecaster = new OWMForecaster("bcebc1ab15b0bf", "5a38a0988a6a37301a3b4963d6106fa2");
@@ -89,8 +89,8 @@ public class InitForm extends javax.swing.JPanel {
                         synthesizerIsSpeaking = true;
                         synthesizer.speak(vocaliaAnswer.getText());
                         synthesizerIsSpeaking = false;
-                        if (search.getText().equals(AppConstants.SYNTHESIZER_IS_SPEAKING)) {
-                            signalSearch(AppConstants.SEND, true);
+                        if (search.getText().equals(AppUtils.SYNTHESIZER_IS_SPEAKING)) {
+                            signalSearch(AppUtils.SEND, true);
                         }
                     }
                 } catch (InterruptedException e) {
@@ -246,9 +246,9 @@ public class InitForm extends javax.swing.JPanel {
             lockConnection.notifyAll();
         }
         if (synthesizerIsSpeaking) {
-            signalSearch(AppConstants.SYNTHESIZER_IS_SPEAKING, false);
+            signalSearch(AppUtils.SYNTHESIZER_IS_SPEAKING, false);
         } else {
-            signalSearch(AppConstants.SEARCH_WHEN_CLICKED, true);
+            signalSearch(AppUtils.SEARCH_WHEN_CLICKED, true);
         }
     }//GEN-LAST:event_searchMouseClicked
 
@@ -265,7 +265,7 @@ public class InitForm extends javax.swing.JPanel {
                 lockConnection.notifyAll();
             }
             if (synthesizerIsSpeaking) {
-                signalSearch(AppConstants.SYNTHESIZER_IS_SPEAKING, false);
+                signalSearch(AppUtils.SYNTHESIZER_IS_SPEAKING, false);
             } else {
                 handleCommand(search.getText());
             }
@@ -278,7 +278,7 @@ public class InitForm extends javax.swing.JPanel {
             lockConnection.notifyAll();
         }
         if (synthesizerIsSpeaking) {
-            signalSearch(AppConstants.SYNTHESIZER_IS_SPEAKING, false);
+            signalSearch(AppUtils.SYNTHESIZER_IS_SPEAKING, false);
         } else {
             handleCommand(search.getText());
         }
@@ -290,7 +290,7 @@ public class InitForm extends javax.swing.JPanel {
             lockConnection.notifyAll();
         }
         if (synthesizerIsSpeaking) {
-            signalSearch(AppConstants.SYNTHESIZER_IS_SPEAKING, false);
+            signalSearch(AppUtils.SYNTHESIZER_IS_SPEAKING, false);
         } else {
             synchronized (lockVoiceCommand) {
                 lockVoiceCommand.notifyAll();
@@ -301,7 +301,7 @@ public class InitForm extends javax.swing.JPanel {
     private void signalSearch(String text, boolean isEnabled) {
         search.setEnabled(isEnabled);
         search.setText(text);
-        search.setDisabledTextColor(isEnabled ? AppConstants.SEARCH_ENABLED_COLOR : AppConstants.SEARCH_DISABLED_COLOR);
+        search.setDisabledTextColor(isEnabled ? AppUtils.SEARCH_ENABLED_COLOR : AppUtils.SEARCH_DISABLED_COLOR);
     }
 
     private void handleCommand(String searchQuery) {

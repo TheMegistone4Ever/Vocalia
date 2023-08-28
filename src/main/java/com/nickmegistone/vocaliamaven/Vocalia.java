@@ -1,15 +1,13 @@
 package com.nickmegistone.vocaliamaven;
 
-import com.nickmegistone.appconstants.AppConstants;
+import com.nickmegistone.apputils.AppUtils;
 import com.nickmegistone.form.Form;
 import com.nickmegistone.form.InitForm;
-import javazoom.jl.decoder.JavaLayerException;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 
 public class Vocalia extends javax.swing.JFrame {
 
@@ -17,9 +15,9 @@ public class Vocalia extends javax.swing.JFrame {
     private boolean isFullScreen = false;
     private final InitForm initForm;
     
-    public Vocalia() throws IOException, JavaLayerException {
+    public Vocalia() {
         initComponents();
-        setBackground(AppConstants.MAIN_BACKGROUND_COLOR);
+        setBackground(AppUtils.MAIN_BACKGROUND_COLOR);
         initForm = new InitForm();
         menu1.initMenu(index -> {
             if (index == 0) {
@@ -51,8 +49,8 @@ public class Vocalia extends javax.swing.JFrame {
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setUndecorated(true);
 
-        roundPanel1.setBackground(AppConstants.LIGHT_BACKGROUND_COLOR);
-        roundPanel1.setPreferredSize(new java.awt.Dimension(AppConstants.WIDTH, AppConstants.HEIGHT));
+        roundPanel1.setBackground(AppUtils.LIGHT_BACKGROUND_COLOR);
+        roundPanel1.setPreferredSize(new java.awt.Dimension(AppUtils.WIDTH, AppUtils.HEIGHT));
         roundPanel1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 roundPanel1MouseDragged(evt);
@@ -70,7 +68,7 @@ public class Vocalia extends javax.swing.JFrame {
         menu1.setMinimumSize(new java.awt.Dimension(0, 0));
         menu1.setPreferredSize(new java.awt.Dimension(256, 680));
 
-        body.setBackground(AppConstants.DARK_BACKGROUND_COLOR);
+        body.setBackground(AppUtils.DARK_BACKGROUND_COLOR);
         body.setPreferredSize(new java.awt.Dimension(998, 680));
         body.setLayout(new java.awt.BorderLayout());
 
@@ -129,19 +127,23 @@ public class Vocalia extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        System.out.println(evt);
         initForm.handleExitCommand();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void roundPanel1MouseDragged(@NotNull MouseEvent evt) {//GEN-FIRST:event_roundPanel1MouseDragged
+        System.out.println(evt);
         setLocation(evt.getXOnScreen() - mouseX, evt.getYOnScreen() - mouseY);
     }//GEN-LAST:event_roundPanel1MouseDragged
 
     private void roundPanel1MousePressed(@NotNull MouseEvent evt) {//GEN-FIRST:event_roundPanel1MousePressed
+        System.out.println(evt);
         mouseX = evt.getX();
         mouseY = evt.getY();
     }//GEN-LAST:event_roundPanel1MousePressed
 
     private void roundPanel1MouseClicked(@NotNull MouseEvent evt) {//GEN-FIRST:event_roundPanel1MouseClicked
+        System.out.println(evt);
         if (evt.getClickCount() > 1) {
             GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
             if (isFullScreen) {
@@ -177,12 +179,7 @@ public class Vocalia extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            Vocalia vocalia;
-            try {
-                vocalia = new Vocalia();
-            } catch (IOException | JavaLayerException e) {
-                throw new RuntimeException(e);
-            }
+            Vocalia vocalia = new Vocalia();
             vocalia.setIconImage(new ImageIcon(System.getProperty("user.dir") + "/src/main/java/com/nickmegistone/resources/logo.png").getImage());
             vocalia.setVisible(true);
         });

@@ -1,18 +1,14 @@
 package com.nickmegistone.ai;
 
+import com.nickmegistone.apputils.AppUtils;
 import io.ipinfo.api.IPinfo;
 import io.ipinfo.api.errors.RateLimitedException;
 import io.ipinfo.api.model.IPResponse;
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.URL;
 import java.util.Locale;
 
 /**
@@ -49,16 +45,18 @@ public class OWMForecaster {
     public String forecast() {
         String forecast = "Hello there! It seems we've encountered a little hiccup in our weather system, and " +
                 "unfortunately, we don't have your specific location information at the moment.";
-        JSONObject json = new JSONObject(getUrlContent(
-                String.format(
-                        "https://api.openweathermap.org/data/2.5/forecast?lat=%s&lon=%s&appid=%s&units=%s&lang=%s",
-                        response.getLatitude(),
-                        response.getLongitude(),
-                        OWMId,
-                        "metric",
-                        "en"
+        JSONObject json = new JSONObject(
+                AppUtils.getUrlContent(
+                        String.format(
+                                "https://api.openweathermap.org/data/2.5/forecast?lat=%s&lon=%s&appid=%s&units=%s&lang=%s",
+                                response.getLatitude(),
+                                response.getLongitude(),
+                                OWMId,
+                                "metric",
+                                "en"
+                        )
                 )
-        ));
+        );
         if (json.getString("cod").equals("200")) {
             JSONObject infoObj = json.getJSONArray("list").getJSONObject(1);
             JSONObject mainObj = infoObj.getJSONObject("main");
@@ -87,27 +85,5 @@ public class OWMForecaster {
             );
         }
         return forecast;
-    }
-
-    /**
-     * Retrieves the content of a URL address.
-     *
-     * @param urlAddress The URL address from which to retrieve the content.
-     * @return The content of the URL as a string.
-     */
-    private static @NotNull String getUrlContent(String urlAddress) {
-        StringBuilder response = new StringBuilder();
-        try {
-            HttpURLConnection con = (HttpURLConnection) new URL(urlAddress).openConnection();
-            try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
-                String line;
-                while ((line = bufferedReader.readLine()) != null) {
-                    response.append(line).append("\n");
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return response.toString();
     }
 }

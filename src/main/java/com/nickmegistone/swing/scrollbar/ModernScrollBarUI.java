@@ -1,5 +1,6 @@
 package com.nickmegistone.swing.scrollbar;
 
+import com.nickmegistone.apputils.AppUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.Dimension;
@@ -15,16 +16,14 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 
 public class ModernScrollBarUI extends BasicScrollBarUI {
 
-    private final int THUMB_SIZE = 80;
-
     @Override
     protected Dimension getMaximumThumbSize() {
-        return scrollbar.getOrientation() == JScrollBar.VERTICAL ? new Dimension(0, THUMB_SIZE) : new Dimension(THUMB_SIZE, 0);
+        return scrollbar.getOrientation() == JScrollBar.VERTICAL ? new Dimension(0, AppUtils.THUMB_SIZE) : new Dimension(AppUtils.THUMB_SIZE, 0);
     }
 
     @Override
     protected Dimension getMinimumThumbSize() {
-        return scrollbar.getOrientation() == JScrollBar.VERTICAL ? new Dimension(0, THUMB_SIZE) : new Dimension(THUMB_SIZE, 0);
+        return getMaximumThumbSize();
     }
 
     @Override
