@@ -84,14 +84,13 @@ public class Menu extends javax.swing.JPanel {
         menu.setSelected(true);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        com.nickmegistone.swing.RoundPanel roundPanel1 = new com.nickmegistone.swing.RoundPanel();
-        // Variables declaration - do not modify                     
-        com.nickmegistone.swing.ImageAvatar imageAvatar1 = new com.nickmegistone.swing.ImageAvatar();
-        JLabel jLabel1 = new JLabel();
-        com.nickmegistone.swing.RoundPanel roundPanel2 = new com.nickmegistone.swing.RoundPanel();
+        roundPanel1 = new com.nickmegistone.swing.RoundPanel();
+        imageAvatar1 = new com.nickmegistone.swing.ImageAvatar();
+        jLabel1 = new JLabel();
+        roundPanel2 = new com.nickmegistone.swing.RoundPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         panelMenu = new javax.swing.JPanel();
 
@@ -177,9 +176,14 @@ public class Menu extends javax.swing.JPanel {
                 .addGap(10, 10, 10)
                 .addComponent(roundPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-    }// </editor-fold>                        
+    }// </editor-fold>//GEN-END:initComponents
 
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    com.nickmegistone.swing.RoundPanel roundPanel1;
+    com.nickmegistone.swing.ImageAvatar imageAvatar1;
+    JLabel jLabel1 = new JLabel();
+    com.nickmegistone.swing.RoundPanel roundPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel panelMenu;
-    // End of variables declaration                   
+    // End of variables declaration//GEN-END:variables
 }

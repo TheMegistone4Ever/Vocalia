@@ -31,7 +31,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="com.raven.swing.RoundPanel" name="roundPanel1">
+    <Container class="com.nickmegistone.swing.RoundPanel" name="roundPanel1">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="33" green="33" red="33" type="rgb"/>
@@ -64,7 +64,7 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Container class="com.raven.swing.ImageAvatar" name="imageAvatar1">
+        <Container class="com.nickmegistone.swing.ImageAvatar" name="imageAvatar1">
           <Properties>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="e7" green="e7" red="e7" type="rgb"/>
@@ -92,7 +92,7 @@
         </Component>
       </SubComponents>
     </Container>
-    <Container class="com.raven.swing.RoundPanel" name="roundPanel2">
+    <Container class="com.nickmegistone.swing.RoundPanel" name="roundPanel2">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="33" green="33" red="33" type="rgb"/>

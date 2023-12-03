@@ -7,7 +7,7 @@ public class Form extends javax.swing.JPanel {
     public Form(int index) {
         initComponents();
         setOpaque(false);
-        jLabel1.setText("Form " + index);
+        jLabel1.setText("Coming soon " + index);
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -15,13 +15,13 @@ public class Form extends javax.swing.JPanel {
 
         jLabel1 = new javax.swing.JLabel();
 
-        jLabel1.setFont(new java.awt.Font("sansserif", Font.BOLD, 48)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("sansserif", 1, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(137, 137, 137));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Form");
+        jLabel1.setText("Coming soon");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        setLayout(layout);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
