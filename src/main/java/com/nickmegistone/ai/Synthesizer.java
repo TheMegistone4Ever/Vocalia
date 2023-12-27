@@ -5,7 +5,7 @@ import com.sun.speech.freetts.VoiceManager;
 
 /**
  * The Synthesizer class represents a text-to-speech synthesizer that can convert text into speech.
- * It uses the FreeTTS library for speech synthesis.
+ * It uses the FreeTTS library for speech synthesis. <a href="https://cmusphinx.github.io/wiki/tutorial/">Tutorial</a>.
  *
  * @author Mykyta Kyselov - <a href="https://github.com/TheMegistone4Ever">Github</a>
  */

@@ -29,7 +29,7 @@ public class Vocalia extends javax.swing.JFrame {
         menu1.initMenu(index -> {
             switch (index) {
                 case 0 -> showForm(initForm);
-                case 1 -> showForm(new Form(index)); // TODO: add help form, HOOK
+                case 1 -> showForm(new Form(index)); // TODO: add help form
                 case 2 -> showForm(creatorsForm);
                 case 9 -> showForm(licensesForm);
                 default -> showForm(new Form(index));
