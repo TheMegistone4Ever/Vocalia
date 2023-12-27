@@ -1,6 +1,6 @@
 package com.nickmegistone.ai;
 
-import com.nickmegistone.apputils.AppUtils;
+import static com.nickmegistone.apputils.AppUtils.getUrlContent;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.URLEncoder;
@@ -34,7 +34,7 @@ public class GoogleTranslator {
      * @return         The translated text.
      */
     public @NotNull String translate(String langFrom, String langTo, String text) {
-        return AppUtils.getUrlContent(
+        return getUrlContent(
                 String.format(
                         "https://script.google.com/macros/s/%s/exec?q=%s&target=%s&source=%s",
                         deployId,

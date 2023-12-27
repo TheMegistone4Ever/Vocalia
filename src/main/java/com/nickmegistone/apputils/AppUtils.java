@@ -14,8 +14,8 @@ import java.nio.charset.StandardCharsets;
 public final class AppUtils {
 
     public static final int MENU_SLEEP_MILLIS = 1400;
-    public static final int WIDTH = 1280;
-    public static final int HEIGHT = 720;
+    public static final int FRAME_WIDTH = 1280;
+    public static final int FRAME_HEIGHT = 720;
     public static final int THUMB_SIZE = 80;
     public static final int INTERNET_TIMEOUT = 1500;
     public static final Color SEARCH_ENABLED_COLOR = new Color(0, 102, 102);

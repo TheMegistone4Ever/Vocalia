@@ -1,7 +1,7 @@
 package com.nickmegistone.form;
 
 import com.nickmegistone.ai.*;
-import com.nickmegistone.apputils.AppUtils;
+import static com.nickmegistone.apputils.AppUtils.*;
 import com.nickmegistone.swing.scrollbar.ScrollBarCustom;
 
 import javax.swing.*;
@@ -24,7 +24,7 @@ public class InitForm extends javax.swing.JPanel {
     private final Thread synthesizerThread;
     private final Supplier<Boolean> isNetUnavailable = () -> {
         try (Socket socket = new Socket()) {
-            socket.connect(new InetSocketAddress("google.com", 80), AppUtils.INTERNET_TIMEOUT);
+            socket.connect(new InetSocketAddress("google.com", 80), INTERNET_TIMEOUT);
             return false;
         } catch (IOException e) {
             return true;
@@ -36,8 +36,8 @@ public class InitForm extends javax.swing.JPanel {
                 while (true) {
                     lockConnection.wait();
                     while (isNetUnavailable.get()) {
-                        signalSearch(AppUtils.NO_INTERNET_CONNECTION_SEARCH, false);
-                        lockConnection.wait(AppUtils.INTERNET_TIMEOUT);
+                        signalSearch(NO_INTERNET_CONNECTION_SEARCH, false);
+                        lockConnection.wait(INTERNET_TIMEOUT);
                     }
                 }
             }
@@ -50,7 +50,7 @@ public class InitForm extends javax.swing.JPanel {
     public InitForm() {
         initComponents();
         setOpaque(false);
-        search.setText(AppUtils.SEND);
+        search.setText(SEND);
         retryConnectionThread.start();
         voiceCommandThread = new Thread(() -> {
             synchronized (lockConnection) {
@@ -59,7 +59,7 @@ public class InitForm extends javax.swing.JPanel {
             try {
                 synchronized (lockConnection) {
                     while (isNetUnavailable.get()) {
-                        lockConnection.wait(AppUtils.INTERNET_TIMEOUT);
+                        lockConnection.wait(INTERNET_TIMEOUT);
                     }
                 }
                 owmForecaster = new OWMForecaster("bcebc1ab15b0bf", "5a38a0988a6a37301a3b4963d6106fa2");
@@ -89,8 +89,8 @@ public class InitForm extends javax.swing.JPanel {
                         synthesizerIsSpeaking = true;
                         synthesizer.speak(vocaliaAnswer.getText());
                         synthesizerIsSpeaking = false;
-                        if (search.getText().equals(AppUtils.SYNTHESIZER_IS_SPEAKING)) {
-                            signalSearch(AppUtils.SEND, true);
+                        if (search.getText().equals(SYNTHESIZER_IS_SPEAKING)) {
+                            signalSearch(SEND, true);
                         }
                     }
                 } catch (InterruptedException e) {
@@ -122,7 +122,7 @@ public class InitForm extends javax.swing.JPanel {
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", Font.PLAIN, 36)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 102, 153));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Vocalia's answers will appear here:");
@@ -130,7 +130,7 @@ public class InitForm extends javax.swing.JPanel {
         jLabel2.setRequestFocusEnabled(false);
 
         search.setBackground(new java.awt.Color(0, 102, 102));
-        search.setFont(new java.awt.Font("Segoe UI", Font.PLAIN, 18)); // NOI18N
+        search.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         search.setForeground(new java.awt.Color(255, 255, 255));
         search.setText("Send...");
         search.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -151,7 +151,7 @@ public class InitForm extends javax.swing.JPanel {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", Font.PLAIN, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 102, 153));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("To aks a question insert text into \"Search\" field or ask it by voice button =)");
@@ -179,7 +179,7 @@ public class InitForm extends javax.swing.JPanel {
             }
         });
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", Font.BOLD, 48)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 102, 153));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("Welcome to Vocalia!");
@@ -187,25 +187,27 @@ public class InitForm extends javax.swing.JPanel {
         jLabel5.setRequestFocusEnabled(false);
 
         jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        jScrollPane2.setVerticalScrollBar(new ScrollBarCustom(new Color(200, 200, 200, 50)));
+        jScrollPane2.setVerticalScrollBar(new ScrollBarCustom(new Color(130, 130, 130, 100)));
 
         vocaliaAnswer.setEditable(false);
         vocaliaAnswer.setBackground(new java.awt.Color(25, 25, 25));
         vocaliaAnswer.setColumns(20);
-        vocaliaAnswer.setFont(new java.awt.Font("Segoe UI", Font.PLAIN, 24)); // NOI18N
+        vocaliaAnswer.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         vocaliaAnswer.setForeground(new java.awt.Color(255, 255, 255));
         vocaliaAnswer.setLineWrap(true);
         vocaliaAnswer.setRows(5);
         vocaliaAnswer.setText("A very witty, self-sufficient and self-explanatory response from Vocalia the Oracle...");
         vocaliaAnswer.setWrapStyleWord(true);
+        vocaliaAnswer.setMaximumSize(new java.awt.Dimension(2147483647, 200));
+        vocaliaAnswer.setPreferredSize(new java.awt.Dimension(800, 200));
         jScrollPane2.setViewportView(vocaliaAnswer);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        setLayout(layout);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(50, 50, 50)
+                .addGap(55, 55, 55)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -218,7 +220,7 @@ public class InitForm extends javax.swing.JPanel {
                         .addGap(4, 4, 4))
                     .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane2))
-                .addGap(60, 60, 60))
+                .addGap(55, 55, 55))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -236,7 +238,7 @@ public class InitForm extends javax.swing.JPanel {
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(290, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -246,9 +248,9 @@ public class InitForm extends javax.swing.JPanel {
             lockConnection.notifyAll();
         }
         if (synthesizerIsSpeaking) {
-            signalSearch(AppUtils.SYNTHESIZER_IS_SPEAKING, false);
+            signalSearch(SYNTHESIZER_IS_SPEAKING, false);
         } else {
-            signalSearch(AppUtils.SEARCH_WHEN_CLICKED, true);
+            signalSearch(SEARCH_WHEN_CLICKED, true);
         }
     }//GEN-LAST:event_searchMouseClicked
 
@@ -265,7 +267,7 @@ public class InitForm extends javax.swing.JPanel {
                 lockConnection.notifyAll();
             }
             if (synthesizerIsSpeaking) {
-                signalSearch(AppUtils.SYNTHESIZER_IS_SPEAKING, false);
+                signalSearch(SYNTHESIZER_IS_SPEAKING, false);
             } else {
                 handleCommand(search.getText());
             }
@@ -278,7 +280,7 @@ public class InitForm extends javax.swing.JPanel {
             lockConnection.notifyAll();
         }
         if (synthesizerIsSpeaking) {
-            signalSearch(AppUtils.SYNTHESIZER_IS_SPEAKING, false);
+            signalSearch(SYNTHESIZER_IS_SPEAKING, false);
         } else {
             handleCommand(search.getText());
         }
@@ -290,7 +292,7 @@ public class InitForm extends javax.swing.JPanel {
             lockConnection.notifyAll();
         }
         if (synthesizerIsSpeaking) {
-            signalSearch(AppUtils.SYNTHESIZER_IS_SPEAKING, false);
+            signalSearch(SYNTHESIZER_IS_SPEAKING, false);
         } else {
             synchronized (lockVoiceCommand) {
                 lockVoiceCommand.notifyAll();
@@ -301,7 +303,7 @@ public class InitForm extends javax.swing.JPanel {
     private void signalSearch(String text, boolean isEnabled) {
         search.setEnabled(isEnabled);
         search.setText(text);
-        search.setDisabledTextColor(isEnabled ? AppUtils.SEARCH_ENABLED_COLOR : AppUtils.SEARCH_DISABLED_COLOR);
+        search.setDisabledTextColor(isEnabled ? SEARCH_ENABLED_COLOR : SEARCH_DISABLED_COLOR);
     }
 
     private void handleCommand(String searchQuery) {

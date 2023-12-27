@@ -1,7 +1,5 @@
 package com.nickmegistone.form;
 
-import java.awt.*;
-
 public class Form extends javax.swing.JPanel {
 
     public Form(int index) {
