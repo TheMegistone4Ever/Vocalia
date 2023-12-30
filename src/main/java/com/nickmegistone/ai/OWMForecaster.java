@@ -1,6 +1,5 @@
 package com.nickmegistone.ai;
 
-import static com.nickmegistone.apputils.AppUtils.getUrlContent;
 import io.ipinfo.api.IPinfo;
 import io.ipinfo.api.errors.RateLimitedException;
 import io.ipinfo.api.model.IPResponse;
@@ -9,10 +8,10 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.InetSocketAddress;
-import java.net.Socket;
 import java.net.URL;
 import java.util.Locale;
+
+import static com.nickmegistone.apputils.AppUtils.getUrlContent;
 
 /**
  * This class represents an OWMForecaster that retrieves weather forecast information from the OpenWeatherMap API.
@@ -32,7 +31,8 @@ public class OWMForecaster {
      */
     public OWMForecaster(String IPInfoId, String OWMId) {
         this.OWMId = OWMId;
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(new URL("http://checkip.amazonaws.com/").openStream()))) {
+        // TODO: Replace with a more reliable method of retrieving the IP address.
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new URL("https://checkip.amazonaws.com/").openStream()))) {
             response = new IPinfo.Builder().setToken(IPInfoId).build().lookupIP(br.readLine());
         } catch (IOException | RateLimitedException e) {
             throw new RuntimeException(e);
