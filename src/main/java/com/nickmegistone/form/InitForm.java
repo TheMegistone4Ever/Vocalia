@@ -187,6 +187,7 @@ public class InitForm extends javax.swing.JPanel {
         jLabel5.setRequestFocusEnabled(false);
 
         jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane2.setMinimumSize(new java.awt.Dimension(44, 7));
         jScrollPane2.setVerticalScrollBar(new ScrollBarCustom(new Color(130, 130, 130, 100)));
 
         vocaliaAnswer.setEditable(false);
@@ -195,11 +196,11 @@ public class InitForm extends javax.swing.JPanel {
         vocaliaAnswer.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         vocaliaAnswer.setForeground(new java.awt.Color(255, 255, 255));
         vocaliaAnswer.setLineWrap(true);
-        vocaliaAnswer.setRows(5);
+        vocaliaAnswer.setRows(32);
         vocaliaAnswer.setText("A very witty, self-sufficient and self-explanatory response from Vocalia the Oracle...");
         vocaliaAnswer.setWrapStyleWord(true);
-        vocaliaAnswer.setMaximumSize(new java.awt.Dimension(2147483647, 200));
-        vocaliaAnswer.setPreferredSize(new java.awt.Dimension(800, 200));
+        vocaliaAnswer.setMaximumSize(new java.awt.Dimension(32767, 32767));
+        vocaliaAnswer.setMinimumSize(new java.awt.Dimension(1, 1));
         jScrollPane2.setViewportView(vocaliaAnswer);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -219,7 +220,7 @@ public class InitForm extends javax.swing.JPanel {
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(4, 4, 4))
                     .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(55, 55, 55))
         );
         layout.setVerticalGroup(
@@ -237,8 +238,8 @@ public class InitForm extends javax.swing.JPanel {
                 .addGap(48, 48, 48)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(217, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
