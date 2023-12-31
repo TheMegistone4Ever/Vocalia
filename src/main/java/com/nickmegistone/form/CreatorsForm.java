@@ -3,6 +3,7 @@ package com.nickmegistone.form;
 import com.nickmegistone.swing.scrollbar.ScrollBarCustom;
 import java.awt.Color;
 
+// TODO: Add special thanks to DALL-E for generating the logo. ChatGPT for generating the text.
 public class CreatorsForm extends javax.swing.JPanel {
 
     public CreatorsForm() {
