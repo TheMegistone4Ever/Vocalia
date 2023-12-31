@@ -60,19 +60,20 @@ public final class VoiceAssistant {
      * @return The code associated with the voice command. Returns -1 if no matching code is found.
      */
     public int getCode(@NotNull String voiceCommand) {
-        if (voiceCommand.contains("play music")) {
+        voiceCommand = voiceCommand.toLowerCase();
+        if (voiceCommand.startsWith("play music")) {
             return 0;
-        } else if (voiceCommand.contains("tell me a joke")) {
+        } else if (voiceCommand.startsWith("tell me a joke")) {
             return 1;
-        } else if (voiceCommand.contains("weather forecast")) {
+        } else if (voiceCommand.startsWith("weather forecast")) {
             return 2;
-        } else if (voiceCommand.contains("search for")) {
+        } else if (voiceCommand.startsWith("search for")) {
             return 3;
-        } else if (voiceCommand.contains("translate")) {
+        } else if (voiceCommand.startsWith("translate")) {
             return 4;
-        } else if (voiceCommand.contains("hey vocalia")) {
+        } else if (voiceCommand.startsWith("hey vocalia")) {
             return 5;
-        } else if (voiceCommand.contains("bye vocalia")) {
+        } else if (voiceCommand.startsWith("bye vocalia")) {
             return 6;
         }
         return -1;
