@@ -2,7 +2,7 @@
 
 **Last Updated: December 31, 2023**
 
-This work is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0) by siderk1.
+This work is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0) by [Mykyta Kyselov (TheMegistone4Ever)](https://github.com/TheMegistone4Ever).
 
 ## License Summary:
 
