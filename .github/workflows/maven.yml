@@ -38,6 +38,7 @@ jobs:
   qodana:
     runs-on: ubuntu-latest
     needs: build-maven
+
     steps:
       - uses: actions/checkout@v3
         with:
@@ -50,7 +51,6 @@ jobs:
           args: --baseline,qodana.sarif.json,--property=project.open.type=Maven
 
   analyze:
-    name: Analyze
     # Runner size impacts CodeQL analysis time. To learn more, please see:
     #   - https://gh.io/recommended-hardware-resources-for-running-codeql
     #   - https://gh.io/supported-runners-and-hardware-resources
