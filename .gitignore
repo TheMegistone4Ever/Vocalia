@@ -28,6 +28,7 @@
 
 # Executables
 *.exe
+*.jar
 *.out
 *.app
 /target/
