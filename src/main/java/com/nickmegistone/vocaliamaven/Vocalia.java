@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 
 import static com.nickmegistone.apputils.AppUtils.*;
 
+// TODO: Add full docker support
 public class Vocalia extends javax.swing.JFrame {
 
     private int mouseX, mouseY;
