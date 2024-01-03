@@ -50,17 +50,4 @@ jobs:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
         with:
           args: --baseline,qodana.sarif.json,--property=project.open.type=Maven
-      - uses: actions/upload-artifact@v2
-        with:
-          path: ${{ github.workspace }}/qodana
-      - uses: actions/download-artifact@v2
-        id: download-qodana
-        with:
-          name: 'artifact'
-          path: qodana
-      - name: 'Deploy to GitHub Pages'
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./qodana/report
-          destionation_dir: ./
+          path:
