@@ -106,6 +106,9 @@ jobs:
       #     echo "Run, Build Application using script"
       #     ./location_of_script_within_repo/buildscript.sh
 
+      - name: Build Java Maven Project
+        run: mvn -B package --file ./pom.xml
+
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
         with:
