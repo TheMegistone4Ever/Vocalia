@@ -58,7 +58,7 @@ jobs:
     #   - https://gh.io/using-larger-runners
     # Consider using larger runners for possible analysis time improvements.
     runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
-    needs: qodana
+    needs: build-maven
     timeout-minutes: ${{ (matrix.language == 'swift' && 120) || 360 }}
     permissions:
       actions: read
@@ -102,9 +102,9 @@ jobs:
       #   If the Autobuild fails above, remove it and uncomment the following three lines.
       #   modify them (or add more) to build your code if your project, please refer to the EXAMPLE below for guidance.
 
-      - run: |
-            echo "Run, Build Application using script"
-            ./location_of_script_within_repo/buildscript.sh
+      # - run: |
+      #     echo "Run, Build Application using script"
+      #     ./location_of_script_within_repo/buildscript.sh
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
