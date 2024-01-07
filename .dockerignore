@@ -1,0 +1,16 @@
+# Ignore Maven build directories
+/target/
+
+# Ignore temporary and build-related files
+*.iml
+*.ipr
+*.iws
+*.log
+.idea/
+*.class
+*.exe
+*.jar
+
+# Version control directories and files
+.git/
+.gitignore
