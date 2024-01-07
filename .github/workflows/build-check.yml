@@ -90,5 +90,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: 'Build Docker Image'
-        working-directory: ./vocalia
         run: docker build . --file Dockerfile --tag vocalia:${date +%s}
