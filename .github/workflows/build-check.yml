@@ -90,7 +90,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: 'Build with Maven'
-        run: mvn -B verify -Dmaven.compiler.source=1.8 -Dmaven.compiler.target=1.8
+        run: mvn -B verify -Dmaven.compiler.source=17 -Dmaven.compiler.target=17
       - name: 'Build Docker Image'
         working-directory: ./vocalia
         run: docker build . --file Dockerfile --tag vocalia:${date +%s}
