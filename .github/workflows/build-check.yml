@@ -93,6 +93,6 @@ jobs:
         run: mvn -B verify
       - name: 'Build Docker Image'
         working-directory: ./vocalia
-        run: docker build -t vocalia .
+        run: docker build . --file Dockerfile --tag vocalia:${date +%s}
       - name: 'Push Docker Image'
         run: docker push vocalia
