@@ -1,5 +1,6 @@
 FROM maven:3.8.4-openjdk-17-slim
 
+# Set the maintainer
 LABEL maintainer="Mykyta Kyselov (zeusmobilenick@gmail.com)"
 
 # Copy the project files
