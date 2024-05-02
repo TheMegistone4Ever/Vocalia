@@ -31,4 +31,8 @@
 *.jar
 *.out
 *.app
-/target/
+
+# Debug files
+target/
+out/
+bin/
