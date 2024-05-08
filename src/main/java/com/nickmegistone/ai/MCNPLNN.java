@@ -50,11 +50,34 @@ public class MCNPLNN {
     }
 
     /**
+     * This function reads text from a file and returns a list of cleaned words.
+     *
+     * @param filePath A string representing the path to the file to be read.
+     * @return A list of cleaned words extracted from the file.
+     */
+    private static @NotNull List<String> readAndCleanText(String filePath) {
+        List<String> cleanedWords = new ArrayList<>();
+        Pattern pattern = Pattern.compile("\\b\\w+\\b");
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                Matcher matcher = pattern.matcher(line.replaceAll("[^\\w\\s\\a(){}-]", "").toLowerCase());
+                while (matcher.find()) {
+                    cleanedWords.add(matcher.group());
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return cleanedWords;
+    }
+
+    /**
      * This function generates a string of text based on a Markov chain model.
      *
      * @param maxTokens An integer representing the maximum tokens in the generated text. Default value is 30.
      * @param start     A string representing the initial state to begin text generation.
-     * @return          A processed string of generated text.
+     * @return A processed string of generated text.
      */
     public String getSentence(int maxTokens, @NotNull String start) {
         if (start.chars().filter(ch -> ch == ' ').count() + 1 != nGram) {
@@ -77,29 +100,6 @@ public class MCNPLNN {
                 .replaceFirst(" because", "? - because")
                 .replaceFirst(" youre", ", you're")
                 .replaceFirst(" haha", " - :) ha-ha ;),");
-    }
-
-    /**
-     * This function reads text from a file and returns a list of cleaned words.
-     *
-     * @param filePath A string representing the path to the file to be read.
-     * @return A list of cleaned words extracted from the file.
-     */
-    private static @NotNull List<String> readAndCleanText(String filePath) {
-        List<String> cleanedWords = new ArrayList<>();
-        Pattern pattern = Pattern.compile("\\b\\w+\\b");
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                Matcher matcher = pattern.matcher(line.replaceAll("[^\\w\\s\\a(){}-]", "").toLowerCase());
-                while (matcher.find()) {
-                    cleanedWords.add(matcher.group());
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return cleanedWords;
     }
 
     /**

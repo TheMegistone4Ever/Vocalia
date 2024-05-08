@@ -1,10 +1,11 @@
 package com.nickmegistone.ai;
 
-import static com.nickmegistone.apputils.AppUtils.getUrlContent;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+
+import static com.nickmegistone.apputils.AppUtils.getUrlContent;
 
 /**
  * The GoogleTranslator class represents a translator that can translate text from one language to another using
@@ -31,7 +32,7 @@ public class GoogleTranslator {
      * @param langFrom The source language code.
      * @param langTo   The target language code.
      * @param text     The text to be translated.
-     * @return         The translated text.
+     * @return The translated text.
      */
     public @NotNull String translate(String langFrom, String langTo, String text) {
         return getUrlContent(

@@ -1,18 +1,12 @@
 package com.nickmegistone.swing.scrollbar;
 
-import static com.nickmegistone.apputils.AppUtils.THUMB_SIZE;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JScrollBar;
+import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
+import java.awt.*;
+
+import static com.nickmegistone.apputils.AppUtils.THUMB_SIZE;
 
 public class ModernScrollBarUI extends BasicScrollBarUI {
 

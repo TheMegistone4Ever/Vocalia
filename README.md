@@ -1,4 +1,5 @@
 # Vocalia Voice Assistant Project
+
 ###### &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; — by [Mykyta Kyselov (TheMegistone4Ever)](https://github.com/TheMegistone4Ever).
 
 ## Table of Contents
@@ -51,19 +52,23 @@ To deploy the voice application, follow these steps:
 
 ## Purpose of Development
 
-The development aims to provide users with a convenient interface for interacting with technological devices through voice commands. It seeks to facilitate the use of electronic devices, provide quick access to information and functions, and improve daily life by automating tasks and intelligently answering questions.
+The development aims to provide users with a convenient interface for interacting with technological devices through
+voice commands. It seeks to facilitate the use of electronic devices, provide quick access to information and functions,
+and improve daily life by automating tasks and intelligently answering questions.
 
 ## 2 Preparing to Work with the Software
 
 ### 2.1 System Requirements
 
 **Minimum Hardware Configuration:**
+
 - Processor type: Pentium 2 266 MHz;
 - RAM: 2 GB;
 - Internet connection: at least 2 megabits;
 - JDK version: from 20.0.2.
 
 **Recommended Hardware Configuration:**
+
 - Processor type: AMD Ryzen 9 6900HS;
 - RAM: 16 GB;
 - Internet connection: at least 100 megabits;
@@ -71,8 +76,10 @@ The development aims to provide users with a convenient interface for interactin
 
 ### 2.2 Downloading the Application
 
-- Install JDK 21 or later from the [official website](https://www.oracle.com/cis/java/technologies/downloads/) if it's already not installed.
-- Download the archive with the voice assistant.
+- Install JDK 21 or later from the [official website](https://www.oracle.com/cis/java/technologies/downloads/) if it's
+  already not installed.
+- Download the archive with the voice assistant from the latest release on
+  the [Releases GitHub page](https://github.com/TheMegistone4Ever/Vocalia/releases).
 - Unpack the archive using third-party utilities like WinRAR.
 
 #### Unpacking the voice assistant on a computer
@@ -85,7 +92,8 @@ The development aims to provide users with a convenient interface for interactin
 
 ### 2.3 Checking the Correct Operation
 
-After unzipping, check for a folder with the voice assistant ready to run. If successful, run the assistant using the "run.vbs" file.
+After unzipping, check for a folder with the voice assistant ready to run. If successful, run the assistant using the "
+run.vbs" file.
 
 ## 3 Running the Program
 
@@ -106,6 +114,7 @@ Click on various menu buttons to explore contents, e.g., license and creators.
 <img src="images/VA_Creators.png" alt="The page of voice assistant creators" width="600"/>
 
 On the main panel, use manual or voice search, and try commands like:
+
 - `play music`
 - `tell me a joke`
 - `weather forecast`

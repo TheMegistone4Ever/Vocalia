@@ -1,8 +1,7 @@
 package com.nickmegistone.swing.scrollbar;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import javax.swing.JScrollBar;
+import javax.swing.*;
+import java.awt.*;
 
 public class ScrollBarCustom extends JScrollBar {
 

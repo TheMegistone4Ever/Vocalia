@@ -16,12 +16,12 @@ import java.awt.geom.RoundRectangle2D;
 public class ButtonMenu extends JButton {
 
     private final Animator animator;
+    private final Color effectColor;
+    private final int index;
     private int targetSize;
     private float animateSize;
     private Point pressedPoint;
     private float alpha;
-    private final Color effectColor;
-    private final int index;
 
     public ButtonMenu(int index) {
         this.index = index;

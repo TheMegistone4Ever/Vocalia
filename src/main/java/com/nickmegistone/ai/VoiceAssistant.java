@@ -104,7 +104,7 @@ public final class VoiceAssistant {
      *
      * @param input      The input string to search within.
      * @param searchTerm The search term to find the substring after.
-     * @return           The substring after the search term.
+     * @return The substring after the search term.
      */
     public @NotNull String getSubstringAfter(@NotNull String input, @NotNull String searchTerm) {
         if (input.length() <= searchTerm.length()) return input;

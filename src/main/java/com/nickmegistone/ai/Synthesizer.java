@@ -26,10 +26,6 @@ public class Synthesizer implements AutoCloseable {
         voice.allocate();
     }
 
-    private static final class SynthesizerHolder {
-        private static final Synthesizer instance = new Synthesizer("kevin16", 120);
-    }
-
     /**
      * Returns the singleton instance of the Synthesizer class.
      *
@@ -51,5 +47,9 @@ public class Synthesizer implements AutoCloseable {
     @Override
     public void close() {
         voice.deallocate();
+    }
+
+    private static final class SynthesizerHolder {
+        private static final Synthesizer instance = new Synthesizer("kevin16", 120);
     }
 }
