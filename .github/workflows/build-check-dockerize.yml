@@ -85,7 +85,7 @@ jobs:
 
   build-container:
     runs-on: ubuntu-latest
-    needs: [ qodana, analyze ]
+    needs: analyze
 
     steps:
       - uses: actions/checkout@v3
