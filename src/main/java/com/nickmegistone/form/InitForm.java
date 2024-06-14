@@ -251,11 +251,7 @@ public class InitForm extends javax.swing.JPanel {
         synchronized (lockConnection) {
             lockConnection.notifyAll();
         }
-        if (synthesizerIsSpeaking) {
-            signalSearch(SYNTHESIZER_IS_SPEAKING, false);
-        } else {
-            signalSearch(SEARCH_WHEN_CLICKED, true);
-        }
+        signalSearch(synthesizerIsSpeaking ? SYNTHESIZER_IS_SPEAKING : SEARCH_WHEN_CLICKED, !synthesizerIsSpeaking);
     }//GEN-LAST:event_searchMouseClicked
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
